@@ -1,0 +1,122 @@
+.navbar {
+    background-image: url('../assets/navbar_bg.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin: 0 auto;
+    width: auto;
+    height: fit-content;
+    padding: 15px;
+    border-radius: 10px;
+    position: relative;
+    transition: all 0.35s ease-in-out;
+    top: 0%;
+    z-index: 100;
+}
+
+.navbar.fixed {
+    position: fixed;
+    top: .5rem;
+    left: 0;
+    right: 0;
+    width: 80%;
+    height: 50px;
+}
+
+.navbar ul li.active {
+    background-color: #fff;
+}
+
+.navbar ul li.normal {
+    background-color: #fff8;
+}
+
+.navbar .btn-menubar.fixed {
+    position: absolute;
+    top: .5rem;
+    left: 10px;
+    opacity: 1;
+    width: 10%;
+}
+
+.navbar .top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10pt;
+}
+
+.navbar .top section.left {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.navbar .top section.right {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.navbar .search {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.navbar .search .search-box {
+    flex: 1;
+    margin-right: 10pt;
+    display: flex;
+    justify-content: space-between;
+    background-color: white;
+    box-shadow: 0px 4px 20px #0004;
+    display: grid;
+    grid-template-columns: 80% auto;
+    justify-content: space-between;
+    border-radius: 10px;
+    padding: 7.5px;
+    align-items: center;
+    transition: all 0.35s ease-in-out;
+    top: 0;
+
+}
+
+.navbar .catagory ul li {
+    cursor: pointer;
+}
+
+.navbar .search .search-box.fixed {
+    position: absolute;
+    top: 0;
+    right: 0%;
+    width: 80%;
+    height: 100%;
+    z-index: 100;
+}
+
+.navbar.fixed .top.fixed .left .btn-home,
+.navbar.fixed .catagory.fixed {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.navbar.fixed .search.fixed .p2user {
+    opacity: 0;
+    pointer-events: none;
+}
+
+
+
+.btn-cross {
+    position: absolute;
+    top: 1.5rem;
+    right: 10px;
+    width: 30px;
+    height: 30px;
+    font-size: 1.5rem;
+    border-radius: 100px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

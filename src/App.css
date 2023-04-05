@@ -1,0 +1,213 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+
+}
+
+/* universal U_list design */
+ul {
+  list-style: none;
+  display: flex;
+  gap: 10px;
+  margin: 1rem auto 0;
+}
+
+ul li {
+  border-radius: 10px;
+  padding: 6px 12px;
+}
+
+/* default input */
+input,
+input:focus {
+  border: none;
+  outline: none;
+  width: 100%;
+}
+
+input::placeholder {
+  font-size: small;
+}
+
+/* all buttons */
+.btn {
+  width: fit-content;
+  height: fit-content;
+  align-self: center;
+  padding: 2pt 5pt;
+  display: flex;
+  margin: 0 auto;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: large;
+  transition: all 100ms ease-in;
+  border: 2px dashed transparent;
+}
+
+.btn:hover,
+.btn:focus {
+  filter: brightness(0.85)
+}
+
+.btn-basic {
+  background: #0000001A !important;
+}
+
+.btn-txt-white {
+  color: white;
+}
+
+.btn-cyan {
+  background: #94D8FF;
+}
+
+.btn-yellow {
+  background-color: #FFD585;
+}
+
+.btn-pink {
+  background-color: #FF9EF5;
+}
+
+.btn-circle {
+  border-radius: 50%;
+}
+
+.btn-send {
+  width: 50px;
+  height: 50px;
+  border-radius: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #94D8FF;
+}
+
+.btn-search {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-teal {
+  background-color: #84E988;
+}
+
+.btn-red {
+  background-color: #FF3131;
+}
+
+.btn-black {
+  background-color: #000;
+  color: #fff;
+}
+
+.btn-buy {
+  font-weight: 700;
+  font-size: 1rem;
+  border-radius: 100px;
+  padding: 5pt 14pt;
+  box-shadow: 0 4px 10px #0001;
+}
+
+.btn-cart {
+  font-weight: 700;
+  font-size: .7rem;
+  border-radius: 100px;
+  padding: 2.5pt 12pt;
+  background-color: #DBDBDB;
+  box-shadow: 0 4px 10px #0001;
+}
+
+.btn-cart img {
+  scale: 0.8;
+}
+
+.btn-login {
+  background-color: #464646;
+  font-size: 17px;
+  color: white;
+  text-align: center;
+  margin: 150px auto 0;
+  border-radius: 500px;
+  text-transform: capitalize;
+  width: 100%;
+  height: fit-content;
+  font-weight: 700;
+  padding: 1rem;
+  border: none !important;
+  transition: all 100ms ease-in;
+}
+
+.btn-login:hover {
+  border: none;
+  background-color: #303030;
+  border: none !important;
+}
+
+.btn-disabled,
+.btn-disabled:hover,
+.btn-disabled:focus-within {
+  color: #ffffff8e !important;
+  cursor: not-allowed;
+  background-color: #464646 !important;
+  border: none !important;
+}
+
+/* item link design */
+p.item_link {
+  color: #090909;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+/* home */
+.trends {
+  background-color: #f0f9fa;
+  /*#FFD1D1*/
+  padding: 1rem 1rem 5rem 1rem;
+  border-radius: 10px;
+  width: 100%;
+  height: fit-content;
+  margin-top: 40px;
+}
+
+.trends h1 {
+  margin: 1rem 0;
+}
+
+.trends h3.error {
+  color: red;
+  font-size: 1.5rem;
+  width: fit-content;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+
+}
+
+.trends section {
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: 10pt;
+  justify-content: space-evenly;
+  z-index: 0;
+
+}
+
+
+@media (width >=720px) {
+  .trends section {
+    grid-template-columns: auto auto auto auto;
+  }
+}
+
+/* hot off */
+.hot_off {
+  overflow-x: hidden;
+  margin: 10pt auto;
+  text-align: center;
+  z-index: 0;
+  padding: 10px;
+}

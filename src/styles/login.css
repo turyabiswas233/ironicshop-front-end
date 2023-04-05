@@ -1,0 +1,106 @@
+.login .title {
+    font-size: 2em;
+    color: black;
+    text-align: center;
+}
+
+.login_details {
+    display: block;
+    margin: 2em auto;
+
+}
+
+.form_box {
+    position: relative;
+    width: 100%;
+    padding: 6px;
+    background-color: #fff;
+    border: 2px solid #959595;
+    margin: 2.65rem auto;
+    border-radius: 10px;
+    transition: all 100ms ease-in;
+}
+
+.form_box:focus-within,
+.form_box.email,
+.form_box.password {
+    border: 2px solid darkblue;
+}
+
+.form_box input {
+    height: 45px;
+    font-size: large;
+}
+
+.form_box label {
+    position: absolute;
+    top: -30%;
+    font-size: x-small;
+}
+
+.form_box .pass_icon {
+    position: absolute;
+    right: 5%;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+.form_box .pass_err {
+    position: absolute;
+    bottom: -40%;
+    left: 10px;
+    font-size: .7rem;
+    color: transparent;
+    transition: all 100ms ease-in;
+
+}
+
+.form_box ul.password_tips b {
+    color: #02fa;
+    font-size: .6rem;
+}
+
+.form_box ul.password_tips {
+    list-style-type: none;
+    position: absolute;
+    width: 50%;
+    left: 10%;
+    display: grid;
+    gap: 1pt;
+    font-size: xx-small;
+    font-weight: 700;
+}
+
+.form_box ul.password_tips li {
+    margin-bottom: -7pt;
+    color: #910013;
+}
+
+.form_box .pass_err.show {
+    color: orangered !important;
+    transform: translateX(10px);
+}
+
+.otherSys {
+    display: block;
+    gap: 2rem;
+}
+
+.otherSys .singup {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #c3c3c3;
+    border-radius: 100px;
+    padding: 15px 10px;
+    margin: 1rem auto;
+    background-color: #fff;
+    cursor: pointer;
+    transition: background-color 100ms ease-in;
+    gap: 10px;
+}
+
+.otherSys .singup:hover {
+    background-color: #eeeeee;
+}

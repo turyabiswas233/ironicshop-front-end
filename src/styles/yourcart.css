@@ -1,0 +1,175 @@
+.yourcart {
+    width: 90%;
+    padding: 30px 0;
+    margin: 10px auto;
+    position: relative;
+}
+
+.yourcart header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.yourcart header span {
+    transform: translate(10px, -1rem);
+
+}
+
+.yourcart header h3 {
+    margin: 0 auto;
+    font-size: 2rem;
+    color: black;
+}
+
+.yourcart .main {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    width: 90%;
+    margin: 10px auto;
+
+}
+
+.yourcart .main section.list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    border-radius: 10px;
+    position: relative;
+}
+
+.yourcart .main section.list h4 {
+    text-transform: capitalize;
+    font-weight: bold;
+    font-size: large;
+    text-decoration: underline;
+}
+
+
+.yourcart .main section.list div.list-grid {
+    width: fit-content;
+    display: flex;
+    flex-wrap: wrap;
+    margin: 10px auto;
+    gap: 10px;
+    justify-content: space-between;
+}
+
+
+@media (width >=786px) {
+    .yourcart .main section.list div.list-grid {
+        max-width: 600pt;
+        margin: 0 auto;
+    }
+
+}
+
+.yourcart .totalprice.mobile {
+    bottom: 5%;
+    left: 5%;
+    width: 100%;
+}
+
+.yourcart .totalprice.desktop {
+    top: 0%;
+    right: 0%;
+    width: 400px;
+}
+
+/* cart design */
+.cart {
+    width: 150px;
+    padding: 6px;
+    padding-bottom: 5rem;
+    border-radius: 10px;
+    max-width: 200px;
+    background-color: white;
+    position: relative;
+    margin: 10px auto;
+    border: 1px solid #DBDBDB;
+}
+
+.cart section.info {
+    display: grid;
+    gap: 5pt;
+}
+
+.cart section.info p.title {
+    width: 100%;
+    padding: 5pt;
+    min-height: 16px;
+    border-radius: 5px;
+    background-color: #D9D9D9;
+}
+
+
+.cart section.info p.price {
+    width: fit-content;
+    padding: 5pt;
+    min-height: 16px;
+    border-radius: 5px;
+    background-color: #D9D9D9;
+}
+
+.cart span.selector {
+    position: absolute;
+    right: 4%;
+    bottom: 4%;
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease-in;
+    outline: 2pt solid transparent;
+}
+
+span.selected {
+    outline-color: #22e92a;
+    background: #22E92A;
+    outline-offset: 2px;
+}
+
+span.not-selected {
+    background: #707070;
+}
+
+/* cart design */
+
+/* price details */
+.yourcart .totalprice {
+    position: sticky;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px #00000026;
+}
+
+.totalprice section.right {
+    display: grid;
+    grid-template-columns: auto;
+    margin-left: auto;
+    gap: 10px;
+}
+
+.totalprice section.right button {
+    font-weight: 700;
+    padding: 5pt 15pt;
+}
+
+.totalprice section.left .price {
+    font-size: 2rem;
+}
+
+.totalprice section.left p span {
+    font-weight: 700;
+    color: #e22a2a;
+    font-size: 1.25rem;
+
+}

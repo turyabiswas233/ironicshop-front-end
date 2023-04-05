@@ -1,0 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;700&display=swap');
+@import "react-slideshow-image/dist/styles.css";
+
+:root {
+  font-family: 'Inter Tight', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+
+}
+
+* {
+  margin: 0%;
+  padding: 0%;
+  box-sizing: border-box;
+}
+
+::-webkit-scrollbar {
+  width: 7.5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1e1e1e99;
+  border-radius: 100px;
+}
+
+body {
+  width: 100vw;
+  overflow-x: hidden;
+  min-height: 100vh;
+  background-color: #fff;
+}
