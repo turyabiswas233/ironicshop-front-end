@@ -1,0 +1,152 @@
+.admin_root {
+    width: 100%;
+    padding: 0%;
+    height: 100vh;
+    max-height: 100vh;
+    position: fixed;
+    z-index: 100;
+    background: #fff;
+}
+
+.logo {
+    font-weight: 700;
+    color: black;
+}
+
+/* admin top bar */
+.adminTopbar {
+    padding: 1rem 2rem;
+    margin: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+    border-bottom: 1px solid black;
+}
+
+.adminTopbar ul {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0 10px;
+}
+
+/* admin left navbar */
+.adminNavbar {
+    display: flex;
+    flex-direction: column;
+    padding: 20pt;
+    gap: 20px;
+    border-right: 1px solid black;
+    width: 313px;
+}
+
+.adminNavbar button {
+    width: 100%;
+}
+
+.adminNavbar div {
+    border-radius: 10px;
+    background-color: #E6E6E6;
+    padding: 1rem;
+    height: 100%;
+    position: relative;
+}
+
+.adminNavbar div ul {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    text-align: center;
+    gap: 1rem;
+    overflow-y: auto;
+    text-transform: capitalize;
+}
+
+.adminNavbar div ul li {
+    transition: all .15s ease-in-out;
+}
+
+.adminNavbar div ul li.bg-white {
+    background-color: white;
+}
+
+.adminNavbar div ul li:hover {
+    cursor: pointer;
+    background-color: #fff;
+}
+
+
+.adminNavbar .btn-logout {
+    background-color: #FF4444;
+    color: white;
+    position: absolute;
+    bottom: 1rem;
+    right: 0;
+    left: 0;
+    width: 90%;
+}
+
+/* admin router box */
+.adminRouteBox {
+    border-radius: 10px;
+    border: 1px solid #0008;
+    width: 90%;
+    flex-basis: auto;
+    margin: 1rem;
+    margin-bottom: 1.2rem;
+    overflow-y: scroll;
+}
+
+.adminRouteBox .routeName {
+    padding: 1rem 20pt;
+    text-transform: capitalize;
+    color: #4D4D4D;
+    background-color: #fff;
+    font-size: 25px;
+    z-index: 100;
+    border-bottom: 1px solid #0008;
+    position: sticky;
+    top: 0%;
+}
+
+/* table design */
+table {
+    padding: 0%;
+    width: 100%;
+    text-align: center;
+    position: relative;
+    word-wrap: break-word;
+}
+
+tbody tr td {
+    border-bottom: 1px solid black;
+}
+
+tbody tr td:nth-child(2) {
+    width: 60%;
+    text-align: left;
+    padding-left: 1rem;
+}
+
+table thead th {
+    border-bottom: 1px solid black;
+    position: sticky;
+    top: 13%;
+    background-color: white;
+    padding: .51rem;
+}
+
+table tbody tr td {
+    padding: .510rem;
+}
+
+.btn-round-full {
+    border-radius: 100px;
+    height: fit-content;
+    padding: 0.3rem 1.2rem;
+    font-size: 1rem;
+
+}

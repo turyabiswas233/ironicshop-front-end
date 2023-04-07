@@ -1,5 +1,5 @@
 #root {
-  max-width: 1280px;
+  /* max-width: 1280px; */
   margin: 0 auto;
 
 }
@@ -36,6 +36,7 @@ input::placeholder {
   align-self: center;
   padding: 2pt 5pt;
   display: flex;
+  justify-content: center;
   margin: 0 auto;
   border-radius: 10px;
   cursor: pointer;
@@ -73,6 +74,10 @@ input::placeholder {
   border-radius: 50%;
 }
 
+.btn-bold {
+  font-weight: 700;
+}
+
 .btn-send {
   width: 50px;
   height: 50px;
@@ -81,6 +86,10 @@ input::placeholder {
   align-items: center;
   justify-content: center;
   background: #94D8FF;
+}
+
+.btn-p-1 {
+  padding: 1rem 1.5rem;
 }
 
 .btn-search {

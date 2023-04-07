@@ -9,9 +9,10 @@ function Menubar({ amountMenubar, onclick }) {
     left: amountMenubar ? "0" : "-50vw",
     top: "0",
     background: "purple",
-    width: amountMenubar ? (screenSize.width < 786 ? "75vw" : "500px") : "0vw",
+    width: amountMenubar ? "75vw" : "0vw",
+    maxWidth: "500px",
     height: "100vh",
-    overflowY: "scroll",
+    overflowY: "hidden",
     padding: "20pt",
     zIndex: "100",
     boxShadow: "0 0 10px purple",
@@ -22,12 +23,46 @@ function Menubar({ amountMenubar, onclick }) {
   return (
     <div style={styles}>
       <h2>User name</h2>
+      <ul
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <h3>Menubar</h3>
+        <li>
+          <Link to={"/admin"} style={{ textDecoration: "none" }}>
+            <button
+              className="btn btn-black"
+              style={{
+                textTransform: "uppercase",
+              }}
+            >
+              Admin
+            </button>
+          </Link>
+        </li>
+        <li>
+          <Link to={"/account/login"} style={{ textDecoration: "none" }}>
+            <button
+              className="btn btn-black"
+              style={{
+                textTransform: "uppercase",
+              }}
+            >
+              login | logout
+            </button>
+          </Link>
+        </li>
+      </ul>
       <Link to={"/account/login"} style={{ textDecoration: "none" }}>
         <button
           className="btn btn-black"
           style={{
-            margin: "50vh auto 0",
             textTransform: "uppercase",
+            marginTop: "50%",
           }}
         >
           login | logout
