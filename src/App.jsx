@@ -4,6 +4,7 @@ import { Routes, Route } from "react-router-dom";
 import ErrorPage from "./components/404";
 import { lazy, Suspense } from "react";
 import Footer from "./components/Footer";
+import Buynow from "./components/buy_status/Buynow";
 
 function App() {
   const Home = lazy(() => import("./components/Home"));
@@ -60,6 +61,14 @@ function App() {
           }
           path={"/admin"}
         />
+        <Route
+          element={
+            <Suspense fallback={<Spinner />}>
+              <Buynow />
+            </Suspense>
+          }
+          path={"/paymentconfirm"}
+        />
       </Routes>
 
       <Footer />
@@ -68,3 +77,23 @@ function App() {
 }
 
 export default App;
+
+/*
+
+syntax of TSX as JSX
+
+type [anyPropInitName] = {
+  [any_prop] : 'bool/number/string/function....
+}
+
+EXAMPLE: 
+type LoadingProps = {
+  isLoading: boolean,
+  size: Number
+}
+
+
+
+
+
+*/

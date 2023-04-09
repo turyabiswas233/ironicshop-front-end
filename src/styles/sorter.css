@@ -1,0 +1,79 @@
+.sorter {
+    padding: 2.5cm 0;
+    position: relative;
+}
+
+.sorter ul {
+    display: flex;
+    flex-direction: column;
+    height: fit-content;
+    gap: 0pt;
+    overflow-y: hidden;
+    overflow-x: hidden;
+    position: relative;
+    transition: all .2s ease-in;
+
+}
+
+.sorter .absolute_sort {
+    position: absolute;
+    left: 50%;
+    top: 5%;
+    padding: .5rem 1rem;
+    width: 10%;
+    cursor: pointer;
+    display: flex;
+    width: 90%;
+    background-color: #cee0f5;
+    border: 1px solid #cee0f5;
+    border-radius: 10px;
+    text-transform: capitalize;
+}
+
+.sorter .absolute_sort img {
+    position: absolute;
+    right: 5%;
+    transition: transform .25s ease-in-out;
+}
+
+.sorter .absolute_sort img#hidden {
+    transform: rotate(-90deg);
+}
+
+.sorter .absolute_sort img#show {
+    transform: rotate(90deg);
+}
+
+.sorter ul li {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 5px;
+    padding: 0;
+    width: 150px;
+
+}
+
+.sorter ul li button {
+    background-color: transparent;
+    flex: 1;
+    outline: none;
+    font-size: 1.25rem;
+    text-transform: capitalize;
+    cursor: pointer;
+    flex: 1;
+    border-radius: 10px;
+    padding: .5em 1.4rem;
+    border: 2px solid #e2eefc;
+    background-color: #e2eefc;
+    transition: all .35s cubic-bezier(0.39, 0.575, 0.565, 1);
+
+}
+
+.sorter ul li button:hover {
+    background-color: #cee0f5;
+}
+
+.sorter ul li button.active {
+    border: 2px solid #1471dc;
+}

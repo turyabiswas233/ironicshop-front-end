@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import { datas } from "../../data/data";
 export const SELECTION = {
   toggle: "TOGGLE",
@@ -10,7 +10,7 @@ export const CartContext = createContext();
 
 export function useCartContext() {
   const arr = useContext(allDatas);
-  const [newData, setNewData] = useState([]);
+  const [newData, setNewData] = useState(arr);
   const [price, setPrice] = useState(0);
   // done toggle items
   function toggleItems(id) {
@@ -27,22 +27,15 @@ export function useCartContext() {
     });
   }
   // function for auto update price
-  function priceSeter(id) {
+  function priceSeter() {
     newData.map((ele) => {
-      switch (ele.itemID) {
-        case id:
-          if (!ele.isSelected) {
-            setPrice((pre) => pre + ele.taka);
-            break;
-          } else if (price !== 0) {
-            setPrice((pre) => pre - ele.taka);
-          }
-
-        default:
-          return price;
-      }
+      setPrice((pre) => pre + ele.taka);
     });
   }
+  useEffect(() => {
+    setPrice(0);
+    priceSeter();
+  }, [newData]);
   // delete all items from cart
   function deleteCart() {
     setNewData((pre) => pre.filter((ele) => !ele.isSelected));
@@ -51,13 +44,17 @@ export function useCartContext() {
 
   //add to cart
   function addToCart(id) {
-    setNewData((pre) =>
-      (pre.find((ele) => ele?.itemID == id) || undefined) !==
-      arr.find((ele) => ele.itemID == id)
-        ? [...pre, arr.find((ele) => ele.itemID == id)]
-        : pre
-    );
-    console.log(newData);
+    // setNewData((pre) => {
+    //   pre.find((ele) => {
+    //     if (!ele) {
+    //       alert(`Added ${id}`);
+    //       return [...pre, arr.find((elem) => elem.itemID == id)];
+    //     } else {
+    //       alert("Already added.");
+    //       return [...pre];
+    //     }
+    //   });
+    // });
   }
   return { newData, price, toggleItems, priceSeter, deleteCart, addToCart };
 }

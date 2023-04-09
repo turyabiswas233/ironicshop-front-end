@@ -94,10 +94,10 @@
     border-radius: 10px;
     border: 1px solid #0008;
     width: 90%;
-    flex-basis: auto;
     margin: 1rem;
     margin-bottom: 1.2rem;
-    overflow-y: scroll;
+    overflow-y: hidden;
+    position: relative;
 }
 
 .adminRouteBox .routeName {
@@ -112,41 +112,66 @@
     top: 0%;
 }
 
-/* table design */
-table {
-    padding: 0%;
+
+/* admin users */
+.users-box {
     width: 100%;
-    text-align: center;
+    height: 100%;
     position: relative;
-    word-wrap: break-word;
+    overflow-y: scroll;
 }
 
-tbody tr td {
-    border-bottom: 1px solid black;
-}
-
-tbody tr td:nth-child(2) {
-    width: 60%;
+.users-box td.username {
     text-align: left;
-    padding-left: 1rem;
 }
 
-table thead th {
-    border-bottom: 1px solid black;
+/* product box */
+.products-box {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow-y: scroll;
+}
+
+
+/* universal table */
+table {
+    position: absolute;
+    width: 100%;
+
+}
+
+table thead {
+    background-color: #fff;
     position: sticky;
-    top: 13%;
-    background-color: white;
-    padding: .51rem;
+    top: 0%;
 }
 
-table tbody tr td {
-    padding: .510rem;
+tr th {
+    border-right: 1px solid black;
+    border-bottom: 1pt solid black;
+    padding: .4rem 1rem;
 }
 
-.btn-round-full {
-    border-radius: 100px;
-    height: fit-content;
-    padding: 0.3rem 1.2rem;
-    font-size: 1rem;
+tr th:last-child {
+    border-right: none;
+}
 
+
+
+table tbody td {
+    text-align: center;
+    border-bottom: 1px solid #4D4D4D;
+    margin-bottom: 20px;
+}
+
+.adminGrad {
+    position: absolute;
+    content: "";
+    bottom: 0%;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    background-image: linear-gradient(0deg, white, transparent);
+    pointer-events: none;
 }

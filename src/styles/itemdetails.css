@@ -40,39 +40,25 @@
 }
 
 .hero .photo {
-    position: relative;
+    position: sticky;
+    top: 0;
     top: 15px;
     padding: 10px;
     width: fit-content;
     height: fit-content;
-    margin: 20pt auto;
-}
-
-@media (width < 720px) {
-    .hero {
-        padding-top: 70vh;
-    }
-
-    .hero .photo {
-        position: fixed;
-        width: 90%;
-        left: 5%;
-        top: 15%;
-        background-color: transparent;
-        border-radius: 10px;
-        z-index: -1;
-    }
+    margin: 40pt auto 25pt;
+    z-index: -1;
 }
 
 .hero .photo img {
     width: 100%;
+    max-width: 290px;
     margin: 0 auto;
-
 
 }
 
-.hero .photo ul.list {
-    position: absolute;
+.hero .photo div {
+    position: fixed;
     bottom: 0%;
     transform: translateX(-50%);
     left: 50%;
@@ -84,13 +70,6 @@
     list-style-type: none;
 }
 
-.hero .photo ul.list li {
-    padding: 1pt;
-    width: 10px;
-    height: 10px;
-    background-color: #b8b8b8;
-    border-radius: 50%;
-}
 
 .hero .photo ul.list li.active_photo {
     background-color: #525252 !important;

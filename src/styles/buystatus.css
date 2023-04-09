@@ -1,0 +1,147 @@
+.buy_card {
+    position: fixed;
+}
+
+.sect {
+    width: 95%;
+    height: 40vh;
+    border-radius: 10px;
+    margin: 10px auto;
+    padding: 1rem;
+
+}
+
+.sect form {
+    height: 90%;
+    padding-right: 4pt;
+    overflow-y: auto;
+}
+
+.payment article {
+    display: flex;
+    justify-content: space-between;
+}
+
+.payment article .itemsInfo {
+    height: 80%;
+    padding-right: 4pt;
+    overflow-y: auto;
+    text-align: right;
+}
+
+.sect h2 {
+    width: fit-content;
+}
+
+.location {
+    background-color: #F9DEFF;
+
+}
+
+.location h2 {
+    color: #851F9C;
+}
+
+.payment {
+    position: relative;
+    background-color: #FFD585;
+
+}
+
+
+.payment h2 {
+    color: #8A600E;
+}
+
+button.btn-m-0 {
+    margin: 10px;
+}
+
+.buy_card .payment .confirm {
+    border-radius: 50px;
+    width: fit-content;
+    height: fit-content;
+    padding: .5rem 1.5rem;
+    position: absolute;
+    right: 5%;
+    bottom: 5%;
+    cursor: pointer;
+    transition: all .2s ease-in-out;
+    background: #f0f3f5;
+    font-weight: bold;
+    text-transform: capitalize;
+    border: 1px solid #87f8f8d5;
+}
+
+.confirm:hover {
+    background-color: #9cdcff;
+}
+
+.sect .form_box {
+    position: relative;
+    width: 100%;
+    height: auto;
+    padding: 3px;
+    background-color: #fff;
+    border: 2px solid #959595;
+    margin: 2.65rem auto;
+    border-radius: 10px;
+    transition: all 100ms ease-in;
+}
+
+.sect .form_box:focus-within,
+.sect .form_box.email,
+.sect .form_box.password {
+    border: 2px solid darkblue;
+}
+
+.sect .form_box input {
+    height: 30px;
+    font-size: large;
+    padding: 5px;
+}
+
+.sect .form_box label {
+    position: absolute;
+    top: -14pt;
+    font-size: x-small;
+}
+
+.sect .form_box textarea {
+    width: 100%;
+    height: 50px;
+    outline: none;
+    border: none;
+    padding: 5px;
+}
+
+@media (width>720px) {
+
+    .buy_card main {
+        display: flex;
+        justify-content: space-evenly;
+        gap: 30px;
+        height: 80vh;
+    }
+
+    .sect {
+        height: 90%;
+    }
+
+    .payment article {
+        flex-direction: column;
+    }
+
+    .payment article .itemsInfo {
+        text-align: left;
+        margin-top: 1cm;
+    }
+}
+
+/* custoinfo */
+
+.payment .custoinfo {
+    text-transform: capitalize;
+}
+
+/* login alert box */

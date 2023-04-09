@@ -8,6 +8,7 @@ import { formatMoneyIntoBDT } from "./Hooks/customHooks";
 import { datas } from "../data/data";
 import { useEffect, useState } from "react";
 import { useCartContext } from "./context/CartContext";
+import { Slide } from "react-slideshow-image";
 
 function ItemDetails() {
   const id = window.location.pathname;
@@ -30,7 +31,7 @@ function ItemDetails() {
     }
   });
 
-  const StarYellow = () => {
+  const Star = () => {
     const arrY = [];
     const arrD = [];
 
@@ -67,10 +68,10 @@ function ItemDetails() {
       </>
     );
 
-    for (let i = 0; i < productDB[0]?.rate; i++) {
+    for (let i = 0; i < Math.floor(productDB[0]?.rate); i++) {
       arrY.push(starty);
     }
-    for (let i = 0; i < 5 - productDB[0]?.rate; i++) {
+    for (let i = 0; i < 5 - Math.floor(productDB[0]?.rate); i++) {
       arrD.push(startd);
     }
     return (
@@ -110,7 +111,7 @@ function ItemDetails() {
             <p className="name">Name</p>
           </section>
           <section className="right">
-            <StarYellow />
+            <Star />
           </section>
         </header>
         <article className="message">
@@ -125,7 +126,7 @@ function ItemDetails() {
       <header
         className="root_header"
         style={{
-          backgroundColor: scroll < 1 ? "transparent" : "#fff",
+          backgroundColor: "#fff",
           boxShadow: scroll < 1 ? "" : "0px 5px 5px #0004",
         }}
       >
@@ -159,15 +160,40 @@ function ItemDetails() {
           className="photo"
           style={{
             opacity: scroll < 1 ? 1 - scroll : 0,
-            // transition: "all 100ms ease-in",
+            transition: "all 350ms ease-out ",
             transform: `scale(${scroll < 1 ? 1 - scroll : 0})`,
           }}
         >
-          <ul className="list">
-            <li></li>
-            <li className="active_photo"></li>
-            <li></li>
-          </ul>
+          <div>
+            <Slide
+              autoplay={true}
+              slidesToScroll={1}
+              pauseOnHover={true}
+              slidesToShow={1}
+              arrows={false}
+              easing={"ease"}
+              indicators={true}
+              transitionDuration={200}
+              duration={2300}
+            >
+              <div
+                key={id}
+                style={{
+                  width: "100vw",
+                  maxWidth: "600px",
+                  lineHeight: ".01rem",
+                  margin: "10px auto",
+                }}
+              >
+                <img
+                  style={{ cursor: "pointer" }}
+                  src={productDB[0].img}
+                  alt=""
+                  width={"100%"}
+                />
+              </div>
+            </Slide>
+          </div>
           <img src={productDB[0]?.img} alt="" />
         </section>
         <div className="details">
@@ -177,7 +203,7 @@ function ItemDetails() {
               Product ID: <span> {productDB[0].itemID}</span>
             </h2>
             <span className="rating">
-              <StarYellow />
+              <Star />
               {productDB[0]?.rate}
               {"/5"}
             </span>
@@ -229,9 +255,11 @@ function ItemDetails() {
                   alt=""
                 />
               </button>
-              <button className="btn btn-black btn-txt-white btn-buy ">
-                Buy Now
-              </button>
+              <Link to={"/yourcart"}>
+                <button className="btn btn-black btn-txt-white btn-buy ">
+                  Buy Now
+                </button>
+              </Link>
             </article>
           </section>
           <section className="review">

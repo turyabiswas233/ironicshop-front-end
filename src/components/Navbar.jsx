@@ -24,9 +24,7 @@ function Navbar({ showSearch, searchKey, setSearchKey }) {
           >
             <img src={hamburger} alt="" />
           </button>
-          <button className="btn btn-basic btn-txt-white btn-home">
-            iRonic Store
-          </button>
+          <h2 className="btn-txt-white btn-home">iRonic Store</h2>
         </section>
         <section className="right">
           {/* product location track  */}

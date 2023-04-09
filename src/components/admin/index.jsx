@@ -1,8 +1,10 @@
 import React, { useReducer } from "react";
 import "../../styles/admin.css";
+import watch from "../../assets/watch.png";
+import { Link } from "react-router-dom";
 
 function Admin() {
-  const [state, dispatch] = useReducer(reducer, adminNavOptions[0]);
+  const [state, dispatch] = useReducer(reducer, adminNavOptions[2]);
   function reducer(state, action) {
     switch (action?.type) {
       case action?.payload:
@@ -34,7 +36,9 @@ const AdminTopbar = () => {
     <header>
       <div className="adminTopbar">
         <h2>
-          <span className="logo">iRonic Store</span>
+          <Link to={"/"} style={{ textDecoration: "none" }}>
+            <span className="logo">iRonic Store</span>
+          </Link>
         </h2>
         <ul>
           <li>alarm</li>
@@ -69,7 +73,7 @@ const AdminNavbar = ({ state, onclick }) => {
     </div>
   );
 };
-const adminNavOptions = ["dashboard", "products", "users", "sells list", "ads"];
+const adminNavOptions = ["dashboard", "products", "users", "ads"];
 export default Admin;
 
 // admin route to each section
@@ -78,7 +82,67 @@ const AdminRouteBox = ({ routeName }) => {
   return (
     <div className="adminRouteBox">
       <h1 className="routeName">{routeName}</h1>
+      {routeName == "dashboard" && <Dashboard />}
+      {routeName == "products" && <Products />}
+      {routeName == "sells list" && <Sells />}
       {routeName == "users" && <Users />}
+      {routeName == "ads" && <Ads />}
+      <div className="adminGrad"></div>
+    </div>
+  );
+};
+
+// Dashboard
+const Dashboard = () => {
+  return <div>Dashboard</div>;
+};
+
+// Products
+const Products = () => {
+  return (
+    <div className="products-box">
+      <table cellSpacing={0}>
+        <thead>
+          <tr className="header">
+            <th>Image</th>
+            <th>Name</th>
+            <th>Product ID</th>
+            <th>Sold</th>
+            <th>Rating</th>
+            <th>Price</th>
+            <th>Mark As</th>
+            <th>Delete</th>
+          </tr>
+        </thead>
+        <tbody className="users_data">
+          {products.map((product, id) => {
+            return (
+              <tr key={id}>
+                <td>
+                  <img className="w-50" src={product.img} alt="profile" />
+                </td>
+
+                <td>{product.name}</td>
+                <td>{product.proId}</td>
+                <td>{product.sold}</td>
+                <td>{product.rating}</td>
+                <td>{product.price}</td>
+
+                <td>
+                  <button className="btn btn-cyan btn-txt-white btn-bold round-full btn-px-2 btn-py-1">
+                    Out of stock
+                  </button>
+                </td>
+                <td>
+                  <button className="btn btn-delete btn-txt-white btn-bold round-full btn-px-2 btn-py-1">
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
     </div>
   );
 };
@@ -86,55 +150,197 @@ const AdminRouteBox = ({ routeName }) => {
 // users
 const Users = () => {
   return (
-    <table>
-      <thead>
-        <tr>
-          <th>Image</th>
-          <th>Name</th>
-          <th>Block for a month</th>
-          <th>Delete</th>
-        </tr>
-      </thead>
-      <tbody>
-        <TBody />
-        <TBody />
-        <TBody />
-        <TBody />
-        <TBody />
-        <TBody />
-        <TBody />
-        <TBody />
-        <TBody />
-        <TBody />
-        <TBody />
-        <TBody />
-        <TBody />
-        <TBody />
-        <TBody />
-        <TBody />
-        <TBody />
-      </tbody>
-    </table>
+    <div className="users-box">
+      <table cellSpacing={0}>
+        <thead>
+          <tr className="header">
+            <th>Image</th>
+            <th>Name</th>
+
+            <th>Block</th>
+            <th>Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+          {users.map((user, id) => {
+            return (
+              <tr key={id}>
+                <td>
+                  <img className="w-50" src={user.img} alt="profile" />
+                </td>
+
+                <td className="username">{user.name}</td>
+
+                <td>
+                  <button className="btn btn-cyan btn-txt-white btn-bold round-full btn-px-2 btn-py-1">
+                    Block
+                  </button>
+                </td>
+                <td>
+                  <button className="btn btn-delete btn-txt-white btn-bold round-full btn-px-2 btn-py-1">
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
   );
 };
 
-const TBody = () => {
-  return (
-    <tr>
-      <td>
-        <button>Logo</button>
-      </td>
-      <td>Israt Mimi</td>
-      <td className="td_btn">
-        <button className="btn-cyan btn-txt-white btn-bold btn btn-round-full">
-          Block
-        </button>
-      </td>
-      <td className="td_btn">
-        <button className="btn-red btn-txt-white btn-bold btn btn-round-full">
-          Delete
-        </button>
-      </td>
-    </tr>
-  );
+// Ads
+const Ads = () => {
+  return <div>Ads</div>;
 };
+
+const users = [
+  { name: "Ishrat Mimi", img: watch },
+  { name: "Ishrat Mimi", img: watch },
+  { name: "Ishrat Mimi", img: watch },
+  { name: "Ishrat Mimi", img: watch },
+  { name: "Ishrat Mimi", img: watch },
+  { name: "Ishrat Mimi", img: watch },
+  { name: "Ishrat Mimi", img: watch },
+  { name: "Ishrat Mimi", img: watch },
+  { name: "Ishrat Mimi", img: watch },
+  { name: "Ishrat Mimi", img: watch },
+  { name: "Ishrat Mimi", img: watch },
+  { name: "Ishrat Mimi", img: watch },
+  { name: "Ishrat Mimi", img: watch },
+  { name: "Ishrat Mimi", img: watch },
+  { name: "Ishrat Mimi", img: watch },
+  { name: "Ishrat Mimi", img: watch },
+  { name: "Ishrat Mimi", img: watch },
+  { name: "Ishrat Mimi", img: watch },
+  { name: "Ishrat Mimi", img: watch },
+  { name: "Ishrat Mimi", img: watch },
+  { name: "Ishrat Mimi", img: watch },
+  { name: "Ishrat Mimi", img: watch },
+  { name: "Ishrat Mimi", img: watch },
+  { name: "Ishrat Mimi", img: watch },
+];
+
+const products = [
+  {
+    img: watch,
+    name: "Apple 7pro Watch",
+    sold: 1203,
+    rating: 3.4,
+    price: 20300,
+    proId: "#fbhfhg7S",
+  },
+  {
+    img: watch,
+    name: "Apple 7pro Watch",
+    sold: 1203,
+    rating: 3.4,
+    price: 20300,
+    proId: "#fbhfhg7S",
+  },
+  {
+    img: watch,
+    name: "Apple 7pro Watch",
+    sold: 1203,
+    rating: 3.4,
+    price: 20300,
+    proId: "#fbhfhg7S",
+  },
+  {
+    img: watch,
+    name: "Apple 7pro Watch",
+    sold: 1203,
+    rating: 3.4,
+    price: 20300,
+    proId: "#fbhfhg7S",
+  },
+  {
+    img: watch,
+    name: "Apple 7pro Watch",
+    sold: 1203,
+    rating: 3.4,
+    price: 20300,
+    proId: "#fbhfhg7S",
+  },
+  {
+    img: watch,
+    name: "Apple 7pro Watch",
+    sold: 1203,
+    rating: 3.4,
+    price: 20300,
+    proId: "#fbhfhg7S",
+  },
+  {
+    img: watch,
+    name: "Apple 7pro Watch",
+    sold: 1203,
+    rating: 3.4,
+    price: 20300,
+    proId: "#fbhfhg7S",
+  },
+  {
+    img: watch,
+    name: "Apple 7pro Watch",
+    sold: 1203,
+    rating: 3.4,
+    price: 20300,
+    proId: "#fbhfhg7S",
+  },
+  {
+    img: watch,
+    name: "Apple 7pro Watch",
+    sold: 1203,
+    rating: 3.4,
+    price: 20300,
+    proId: "#fbhfhg7S",
+  },
+  {
+    img: watch,
+    name: "Apple 7pro Watch",
+    sold: 1203,
+    rating: 3.4,
+    price: 20300,
+    proId: "#fbhfhg7S",
+  },
+  {
+    img: watch,
+    name: "Apple 7pro Watch",
+    sold: 1203,
+    rating: 3.4,
+    price: 20300,
+    proId: "#fbhfhg7S",
+  },
+  {
+    img: watch,
+    name: "Apple 7pro Watch",
+    sold: 1203,
+    rating: 3.4,
+    price: 20300,
+    proId: "#fbhfhg7S",
+  },
+  {
+    img: watch,
+    name: "Apple 7pro Watch",
+    sold: 1203,
+    rating: 3.4,
+    price: 20300,
+    proId: "#fbhfhg7S",
+  },
+  {
+    img: watch,
+    name: "Apple 7pro Watch",
+    sold: 1203,
+    rating: 3.4,
+    price: 20300,
+    proId: "#fbhfhg7S",
+  },
+  {
+    img: watch,
+    name: "Apple 7pro Watch",
+    sold: 1203,
+    rating: 3.4,
+    price: 20300,
+    proId: "#fbhfhg7S",
+  },
+];

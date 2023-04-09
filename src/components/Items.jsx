@@ -26,6 +26,7 @@ function Items({ props, itemId }) {
       <div
         style={{
           backgroundColor: "white",
+          width: "160px",
           display: "block",
           padding: "7pt",
           borderRadius: "10px",

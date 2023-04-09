@@ -8,6 +8,7 @@ import "./styles/itemdetails.css";
 import "./styles/login.css";
 import "./styles/navbar.css";
 import "./styles/yourcart.css";
+import "./styles/buystatus.css";
 
 const root = document.getElementById("root");
 ReactDOM.createRoot(root).render(

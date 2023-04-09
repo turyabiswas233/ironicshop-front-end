@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 
-const formatMoneyIntoBDT = (taka) => {
-  const money = new Intl.NumberFormat("en", {
+const formatMoneyIntoBDT = (taka, type) => {
+  const money = new Intl.NumberFormat(type == "shortBDT" ? "bn-IN" : "en", {
     style: "currency",
     currency: "BDT",
   }).format(taka);
-  return money.slice(4, -3);
+  return type == "shortBDT" ? money : money.slice(4, -3);
 };
 
 const convert_numToUnit = (num) => {
