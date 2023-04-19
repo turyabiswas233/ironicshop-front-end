@@ -1,7 +1,9 @@
 import React from "react";
+import { getLoginRoute } from "./Hooks/customHooks";
 
-function Footer({ id }) {
-  if (!id)
+function Footer() {
+  const { isInLoginPage } = getLoginRoute();
+  if (!isInLoginPage)
     return (
       <div
         style={{
@@ -13,6 +15,7 @@ function Footer({ id }) {
           width: "100%",
           position: "absolute",
           left: "0",
+          top: "100%",
           minHeight: "300px",
         }}
       >

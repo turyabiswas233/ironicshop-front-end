@@ -1,5 +1,13 @@
 .buy_card {
-    position: fixed;
+
+    display: grid;
+    padding: 1rem;
+    width: 100%;
+    height: auto;
+    min-height: 100dvh;
+    z-index: 120;
+    background-color: white;
+    overflow-y: scroll;
 }
 
 .sect {
@@ -8,13 +16,25 @@
     border-radius: 10px;
     margin: 10px auto;
     padding: 1rem;
+    overflow: hidden;
 
 }
 
 .sect form {
-    height: 90%;
+    height: 80%;
+    background-color: transparent;
     padding-right: 4pt;
     overflow-y: auto;
+    display: grid;
+    grid-template-columns: repeat(1, auto auto);
+    gap: 10pt;
+    justify-content: space-evenly;
+    align-items: normal;
+}
+
+.buy_card form .form_box {
+    margin: 1.25rem auto;
+    height: fit-content;
 }
 
 .payment article {
@@ -26,7 +46,6 @@
     height: 80%;
     padding-right: 4pt;
     overflow-y: auto;
-    text-align: right;
 }
 
 .sect h2 {
@@ -45,6 +64,7 @@
 .payment {
     position: relative;
     background-color: #FFD585;
+    overflow-y: auto;
 
 }
 
@@ -70,11 +90,11 @@ button.btn-m-0 {
     background: #f0f3f5;
     font-weight: bold;
     text-transform: capitalize;
-    border: 1px solid #87f8f8d5;
+    border: 2.25pt solid #429beed5;
 }
 
-.confirm:hover {
-    background-color: #9cdcff;
+.buy_card .payment .confirm:hover {
+    background-color: #ffe9ad;
 }
 
 .sect .form_box {
@@ -85,7 +105,7 @@ button.btn-m-0 {
     background-color: #fff;
     border: 2px solid #959595;
     margin: 2.65rem auto;
-    border-radius: 10px;
+    border-radius: 2.5pt;
     transition: all 100ms ease-in;
 }
 
@@ -101,31 +121,34 @@ button.btn-m-0 {
     padding: 5px;
 }
 
-.sect .form_box label {
-    position: absolute;
-    top: -14pt;
-    font-size: x-small;
-}
 
-.sect .form_box textarea {
+.form_box textarea {
     width: 100%;
     height: 50px;
     outline: none;
     border: none;
     padding: 5px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 1.05rem;
 }
 
 @media (width>720px) {
 
     .buy_card main {
         display: flex;
-        justify-content: space-evenly;
-        gap: 30px;
-        height: 80vh;
+        justify-content: space-between;
+        gap: 10pt;
+        height: auto;
+
     }
 
     .sect {
         height: 90%;
+    }
+
+    .sect .form_box {
+        width: 80%;
+
     }
 
     .payment article {
@@ -133,15 +156,10 @@ button.btn-m-0 {
     }
 
     .payment article .itemsInfo {
-        text-align: left;
         margin-top: 1cm;
     }
 }
 
-/* custoinfo */
 
-.payment .custoinfo {
-    text-transform: capitalize;
-}
 
 /* login alert box */

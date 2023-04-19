@@ -1,22 +1,40 @@
 // images
 import arrLeft from "../assets/tools/icons/arrowleft.png";
 import shoppingcart from "../assets/tools/icons/shoppingcart.png";
+import watch from "../assets/watch.png";
 import send from "../assets/tools/icons/send.png";
 // react functions and custom hooks
-import { Link } from "react-router-dom";
-import { formatMoneyIntoBDT } from "./Hooks/customHooks";
-import { datas } from "../data/data";
+import { Link, useLocation } from "react-router-dom";
+import {
+  formatMoneyIntoBDT,
+  addToCart_LocalStorage,
+} from "./Hooks/customHooks";
 import { useEffect, useState } from "react";
-import { useCartContext } from "./context/CartContext";
 import { Slide } from "react-slideshow-image";
+import { fdb } from "../../firebase";
+import { doc, getDoc } from "firebase/firestore";
 
 function ItemDetails() {
-  const id = window.location.pathname;
-  const arrID = id.slice(6, -1) + id.slice(-1);
-  const productDB = datas.filter((data) => data.itemID == arrID);
-  const { addToCart } = useCartContext();
+  const id = location.pathname;
+
+  const { cartRef, lcoal_storage, addItem } = addToCart_LocalStorage();
+  const [productDB, setProDB] = useState({});
+
+  async function getItemDetails(id) {
+    const itemDoc = doc(fdb, `products/${id}`);
+    const item = await getDoc(itemDoc);
+    setProDB(item.data());
+  }
 
   const [scroll, setScroll] = useState(0);
+  useEffect(() => {
+    const arrID = id.slice(6, -1) + id.slice(-1);
+
+    getItemDetails(arrID).catch((err) => {
+      alert(err.message);
+    });
+  }, []);
+
   useEffect(() => {
     if (typeof window !== "undefined") {
       function showScrollY() {
@@ -29,7 +47,7 @@ function ItemDetails() {
       });
       window.removeEventListener("scroll", showScrollY());
     }
-  });
+  }, []);
 
   const Star = () => {
     const arrY = [];
@@ -68,10 +86,10 @@ function ItemDetails() {
       </>
     );
 
-    for (let i = 0; i < Math.floor(productDB[0]?.rate); i++) {
+    for (let i = 0; i < Math.floor(productDB?.rate); i++) {
       arrY.push(starty);
     }
-    for (let i = 0; i < 5 - Math.floor(productDB[0]?.rate); i++) {
+    for (let i = 0; i < 5 - Math.floor(productDB?.rate); i++) {
       arrD.push(startd);
     }
     return (
@@ -121,182 +139,196 @@ function ItemDetails() {
       </div>
     );
   };
-  return (
-    <div className="itemDetails">
-      <header
-        className="root_header"
-        style={{
-          backgroundColor: "#fff",
-          boxShadow: scroll < 1 ? "" : "0px 5px 5px #0004",
-        }}
-      >
-        <section className="navigation">
-          {/* return to home btn */}
-          <Link to={"/"}>
-            <button className="btn btn-basic">
-              <img src={arrLeft} alt="" width={20} height={20} />
-            </button>
-          </Link>
-          <Link to={"/"} style={{ textDecoration: "none", marginLeft: "10pt" }}>
-            <button className="btn btn-basic">iRonic shop</button>
-          </Link>
-          <Link to={"/yourcart"} title={"Checkout cart"}>
-            <button className="btn btn-basic  ">
-              {" "}
-              <img
-                style={{ filter: "invert(1)" }}
-                src={shoppingcart}
-                alt=""
-                width={20}
-                height={20}
-              />
-            </button>
-          </Link>
-        </section>
-      </header>
-      {/* hero */}
-      <div className="hero">
-        <section
-          className="photo"
+  if (productDB)
+    return (
+      <div className="itemDetails">
+        <header
+          className="root_header"
           style={{
-            opacity: scroll < 1 ? 1 - scroll : 0,
-            transition: "all 350ms ease-out ",
-            transform: `scale(${scroll < 1 ? 1 - scroll : 0})`,
+            backgroundColor: "#fff",
+            boxShadow: scroll < 1 ? "" : "0px 5px 5px #0004",
           }}
         >
-          <div>
-            <Slide
-              autoplay={true}
-              slidesToScroll={1}
-              pauseOnHover={true}
-              slidesToShow={1}
-              arrows={false}
-              easing={"ease"}
-              indicators={true}
-              transitionDuration={200}
-              duration={2300}
+          <section className="navigation">
+            {/* return to home btn */}
+            <Link to={"/"}>
+              <button className="btn btn-basic">
+                <img src={arrLeft} alt="" width={20} height={20} />
+              </button>
+            </Link>
+            <Link
+              to={"/"}
+              style={{ textDecoration: "none", marginLeft: "10pt" }}
             >
-              <div
-                key={id}
-                style={{
-                  width: "100vw",
-                  maxWidth: "600px",
-                  lineHeight: ".01rem",
-                  margin: "10px auto",
-                }}
-              >
+              <button className="btn btn-basic">iRonic shop</button>
+            </Link>
+            <Link to={"/yourcart"} title={"Checkout cart"}>
+              <button className="btn btn-basic  ">
+                {" "}
                 <img
-                  style={{ cursor: "pointer" }}
-                  src={productDB[0].img}
-                  alt=""
-                  width={"100%"}
-                />
-              </div>
-            </Slide>
-          </div>
-          <img src={productDB[0]?.img} alt="" />
-        </section>
-        <div className="details">
-          <section className="info">
-            <h2 className="title">{productDB[0]?.title} Not for sale.</h2>
-            <h2 className="pro_id">
-              Product ID: <span> {productDB[0].itemID}</span>
-            </h2>
-            <span className="rating">
-              <Star />
-              {productDB[0]?.rate}
-              {"/5"}
-            </span>
-            <p>
-              {productDB[0]?.title} is a wearable {productDB[0]?.type} that
-              allows users to accomplish a variety of tasks, including making
-              phone calls, sending text messages and reading email ...{" "}
-              <span style={{ color: "blue" }}>more</span>
-            </p>
-          </section>
-          <section className="size">
-            <hr className="hr" />
-            <h3>size</h3>
-            <ul>
-              <li>40mm</li>
-              <li>42mm</li>
-              <li>44mm</li>
-              <li>46mm</li>
-            </ul>
-          </section>
-          <section className="avail_col">
-            <hr className="hr" />
-            <h2>Available color</h2>
-            <ul>
-              <li className="pink"></li>
-              <li className="violet"></li>
-              <li className="blue"></li>
-              <li className="green"></li>
-            </ul>
-          </section>
-          <section className="price">
-            <p>
-              <span className="taka">BDT</span>
-              {formatMoneyIntoBDT(productDB[0]?.taka)}
-            </p>
-            <article>
-              <button
-                className="btn btn-cart"
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                }}
-                onClick={() => addToCart(productDB[0].itemID)}
-              >
-                Add to cart
-                <img
-                  style={{ filter: "invert(1)", marginLeft: "4pt" }}
+                  style={{ filter: "invert(1)" }}
                   src={shoppingcart}
                   alt=""
+                  width={20}
+                  height={20}
                 />
               </button>
-              <Link to={"/yourcart"}>
-                <button className="btn btn-black btn-txt-white btn-buy ">
-                  Buy Now
-                </button>
-              </Link>
-            </article>
+            </Link>
           </section>
-          <section className="review">
-            <header className="review_root_head">
-              <h2>Review</h2>
-              <span className="rating">
-                {starW}
-                {`${productDB[0]?.rate}/5`}
-              </span>
-            </header>
-            <hr />
-            {<Review />}
-            {<Review />}
+        </header>
+        {/* hero */}
+        <div className="hero">
+          <section
+            className="photo"
+            style={{
+              opacity: scroll < 1 ? 1 - scroll : 0,
+              transition: "all 350ms ease-out ",
+              transform: `scale(${scroll < 1 ? 1 - scroll : 0})`,
+            }}
+          >
+            <div>
+              <Slide
+                autoplay={true}
+                slidesToScroll={1}
+                pauseOnHover={true}
+                slidesToShow={1}
+                arrows={false}
+                easing={"ease"}
+                indicators={true}
+                transitionDuration={200}
+                duration={2300}
+              >
+                <div
+                  key={1}
+                  style={{
+                    width: "100vw",
+                    maxWidth: "600px",
+                    lineHeight: ".01rem",
+                    margin: "10px auto",
+                  }}
+                >
+                  <img
+                    style={{ cursor: "pointer" }}
+                    src={productDB?.img ? productDB?.img : watch}
+                    alt=""
+                    width={"100%"}
+                  />
+                </div>
+              </Slide>
+            </div>
+            <img src={productDB?.img ? productDB?.img : watch} alt="" />
+          </section>
+          <div className="details">
+            <section className="info">
+              <h2 className="title">{productDB?.title} Not for sale.</h2>
+              <h2 className="pro_id">
+                Product ID: <span> {productDB?.itemID}</span>
+              </h2>
+              {productDB?.rate ? (
+                <span className="rating">
+                  <Star />
+                  {productDB?.rate}
+                  {"/5"}
+                </span>
+              ) : (
+                <span className="rating">New</span>
+              )}
+              <p>
+                {productDB?.title} is a wearable {productDB?.type} that allows
+                users to accomplish a variety of tasks, including making phone
+                calls, sending text messages and reading email ...{" "}
+                <span style={{ color: "blue" }}>more</span>
+              </p>
+            </section>
+            <section className="size">
+              <hr className="hr" />
+              <h3>size</h3>
+              <ul>
+                <li>40mm</li>
+                <li>42mm</li>
+                <li>44mm</li>
+                <li>46mm</li>
+              </ul>
+            </section>
+            <section className="avail_col">
+              <hr className="hr" />
+              <h2>Available color</h2>
+              <ul>
+                <li className="pink"></li>
+                <li className="violet"></li>
+                <li className="blue"></li>
+                <li className="green"></li>
+              </ul>
+            </section>
+            <section className="price">
+              <p>
+                <span className="taka">BDT</span>
+                {formatMoneyIntoBDT(productDB?.taka)}
+              </p>
+              <article>
+                <button
+                  className="btn btn-cart"
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                  onClick={() => addItem(productDB, productDB?.itemID)}
+                >
+                  {JSON.parse(localStorage.getItem(cartRef))?.find(
+                    (data) => data?.itemID == productDB?.itemID
+                  )
+                    ? "In the cart"
+                    : "Add to cart"}
+                  <img
+                    style={{ filter: "invert(1)", marginLeft: "4pt" }}
+                    src={shoppingcart}
+                    alt=""
+                  />
+                </button>
+                <Link to={"/yourcart"} style={{ textDecoration: "none" }}>
+                  <button className="btn btn-black btn-txt-white btn-buy ">
+                    Buy Now
+                  </button>
+                </Link>
+              </article>
+            </section>
+            <section className="review">
+              <header className="review_root_head">
+                <h2>Review</h2>
+                {productDB?.rate && (
+                  <span className="rating">
+                    {starW}
+                    {`${productDB?.rate}/5`}
+                  </span>
+                )}
+              </header>
+              <hr />
+              {<Review />}
+              {<Review />}
+            </section>
+          </div>
+        </div>
+
+        {/* question and answer */}
+        <div className="que_ans">
+          <article>
+            <h3>Ask questions</h3>
+            <hr
+              style={{
+                background: "#000",
+                filter: "contrast(.5)",
+              }}
+            />
+          </article>
+          <section className="qustion_box">
+            <input type="text" name="" id="" placeholder="Type..." />
+            <button className="btn btn-send" type="submit">
+              <img src={send} alt="" />
+            </button>
           </section>
         </div>
       </div>
-
-      {/* question and answer */}
-      <div className="que_ans">
-        <article>
-          <h3>Ask questions</h3>
-          <hr
-            style={{
-              background: "#000",
-              filter: "contrast(.5)",
-            }}
-          />
-        </article>
-        <section className="qustion_box">
-          <input type="text" name="" id="" placeholder="Type..." />
-          <button className="btn btn-send" type="submit">
-            <img src={send} alt="" />
-          </button>
-        </section>
-      </div>
-    </div>
-  );
+    );
 }
 
 export default ItemDetails;

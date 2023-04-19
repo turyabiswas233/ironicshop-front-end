@@ -13,17 +13,16 @@
 .form_box {
     position: relative;
     width: 100%;
-    padding: 6px;
+    padding: 2pt;
     background-color: #fff;
     border: 2px solid #959595;
-    margin: 2.65rem auto;
+    margin: 2rem auto;
     border-radius: 10px;
     transition: all 100ms ease-in;
 }
 
 .form_box:focus-within,
-.form_box.email,
-.form_box.password {
+.form_box.perfect {
     border: 2px solid darkblue;
 }
 
@@ -34,7 +33,7 @@
 
 .form_box label {
     position: absolute;
-    top: -30%;
+    top: -13pt;
     font-size: x-small;
 }
 

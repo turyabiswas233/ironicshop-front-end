@@ -1,8 +1,12 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Link } from "react-router-dom";
-import { convert_numToUnit, formatMoneyIntoBDT } from "./Hooks/customHooks";
-
-function Items({ props, itemId }) {
+import {
+  addToCart_LocalStorage,
+  convert_numToUnit,
+  formatMoneyIntoBDT,
+} from "./Hooks/customHooks";
+import watch from "../assets/watch.png";
+function Items({ props, id }) {
   const Star = () => (
     <svg
       width="15"
@@ -17,34 +21,39 @@ function Items({ props, itemId }) {
       />
     </svg>
   );
-
-  return (
-    <Link
-      to={`item/${itemId}`}
-      style={{ textDecoration: "none", color: "black" }}
-    >
+  const { addItem, cartRef, lcoal_storage } = addToCart_LocalStorage();
+  const itemCart = useMemo(() => {
+    return (
       <div
         style={{
           backgroundColor: "white",
-          width: "160px",
-          display: "block",
+          width: "160pt",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
           padding: "7pt",
           borderRadius: "10px",
           textDecoration: "none",
-          boxShadow: "0 0 10px slateblue",
+          border: "1pt solid gray",
+          marginBottom: "1rem",
         }}
       >
-        {/* photo of product */}
-        <img
-          style={{ margin: "0px auto" }}
-          src={props?.img}
-          alt="product"
-          width={"100%"}
-          height={"auto"}
-        />
-        {/*product's title */}
+        <Link
+          to={`item/${id}`}
+          style={{ textDecoration: "none", color: "black" }}
+        >
+          {/* photo of product */}
+          <img
+            style={{ margin: "0px auto" }}
+            src={props?.img ? props?.img : watch}
+            alt="product"
+            width={115}
+            height={"auto"}
+          />
+          {/*product's title */}
 
-        <p className="item_link">{props?.title}</p>
+          <p className="item_link">{props?.title}</p>
+        </Link>
 
         <br />
         {/* ratings */}
@@ -55,18 +64,25 @@ function Items({ props, itemId }) {
         >
           <span>
             <Star />
-            {props?.rate}/5{" "}
+            {props?.rate ? `${props?.rate}/5` : "New "}
           </span>{" "}
-          | {/* how much sold ? */}
-          <span>{convert_numToUnit(props?.sold)} sold</span>
+          {props?.sold && <span>| {convert_numToUnit(props?.sold)} sold</span>}
         </p>
         {/* taka */}
         <h3 style={{ color: "#00A507" }}>
           {formatMoneyIntoBDT(props?.taka, "shortBDT")}
         </h3>
+        <button className="btn" onClick={() => addItem(props, props?.itemID)}>
+          {JSON.parse(lcoal_storage.getItem(cartRef))?.find(
+            (data) => data?.itemID == props?.itemID
+          )
+            ? "Added"
+            : "Add to cart"}
+        </button>
       </div>
-    </Link>
-  );
+    );
+  }, [JSON.parse(lcoal_storage.getItem(cartRef)), props]);
+  return <>{itemCart}</>;
 }
 
 export default Items;

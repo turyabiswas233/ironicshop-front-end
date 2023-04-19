@@ -4,6 +4,10 @@
 
 }
 
+.App {
+  position: relative;
+}
+
 /* universal U_list design */
 ul {
   list-style: none;
@@ -45,8 +49,7 @@ input::placeholder {
   border: 2px dashed transparent;
 }
 
-.btn:hover,
-.btn:focus {
+.btn:hover {
   filter: brightness(0.85)
 }
 
@@ -138,7 +141,7 @@ input::placeholder {
   font-size: 17px;
   color: white;
   text-align: center;
-  margin: 150px auto 0;
+  margin: auto;
   border-radius: 500px;
   text-transform: capitalize;
   width: 100%;
@@ -173,7 +176,7 @@ input::placeholder {
 }
 
 .round-full {
-  border-radius: 5000px;
+  border-radius: 500px;
 }
 
 .btn-px-2 {
@@ -196,7 +199,6 @@ p.item_link {
 /* home */
 .trends {
   background-color: #f0f9fa;
-  /*#FFD1D1*/
   padding: 1rem 1rem 5rem 1rem;
   border-radius: 10px;
   width: 100%;
@@ -220,12 +222,11 @@ p.item_link {
 
 .trends section {
   display: flex;
-  flex-wrap: wrap;
-  flex-basis: 2;
-  justify-content: center;
   gap: 10pt;
+  overflow-x: scroll;
 
 }
+
 
 
 @media (width >=720px) {
@@ -259,4 +260,33 @@ img.w-50 {
   margin: 0 auto;
   display: flex;
   flex-basis: 1;
+}
+
+/* admin box */
+.admin_box {
+  position: relative;
+  width: 90%;
+  margin: 0 auto;
+  height: fit-content;
+}
+
+
+.admin_box input {
+  border: 1pt solid salmon;
+  width: 100%;
+  padding: 5pt 2pt;
+}
+
+.admin_form .btn-req {
+  margin: 1rem 0 0 auto;
+  padding: .3rem .7rem;
+  background-color: #ffc250;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  border: 0;
+}
+
+.admin_form .btn-req:disabled {
+  cursor: not-allowed;
 }

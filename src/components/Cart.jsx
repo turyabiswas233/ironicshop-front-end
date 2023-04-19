@@ -1,32 +1,34 @@
 import React from "react";
-import selector from "../assets/tools/icons/vector.png";
 import { formatMoneyIntoBDT } from "./Hooks/customHooks";
 
-const EachCart = ({ props, dispatch, count }) => {
+//components
+import watch from "../assets/watch.png";
+const EachCart = ({ props, id, handleToggle }) => {
   return (
-    <div
+    <tr
+      key={id}
       className="cart"
-      onClick={() => {
-        dispatch();
-        count();
-      }}
       style={{
         cursor: "pointer",
       }}
+      onClick={handleToggle}
     >
-      <img src={props?.img} width={"100%"} alt="" />
-      <section className="info">
-        <p className="title">{props?.title}</p>
-        <p className="price">{formatMoneyIntoBDT(props?.taka, "shortBDT")}</p>
-      </section>
-      <span
-        className={`selector ${
-          props?.isSelected ? "selected" : "not-selected"
-        }`}
-      >
-        {props?.isSelected && <img src={selector} width={10} alt="" />}
-      </span>
-    </div>
+      <td className="img">
+        <img src={watch} width={50} alt="" />
+      </td>
+
+      <td>{props?.title}</td>
+      <td>{id}</td>
+
+      <td>{formatMoneyIntoBDT(props?.taka, "shortBDT")}</td>
+      <td>
+        <span
+          className={`selector ${
+            props?.isSelected ? "selected" : "not-selected"
+          }`}
+        ></span>
+      </td>
+    </tr>
   );
 };
 export default EachCart;

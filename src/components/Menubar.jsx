@@ -1,9 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useScreenSize } from "./Hooks/customHooks";
-
+import { useAuthContext } from "./Hooks/firebase/AuthContext";
+import { signOut } from "firebase/auth";
+import { auth } from "../../firebase";
 function Menubar({ amountMenubar, onclick }) {
-  const { screenSize } = useScreenSize();
+  const { currentUser } = useAuthContext();
   const styles = {
     position: "fixed",
     left: amountMenubar ? "0" : "-50vw",
@@ -22,7 +23,13 @@ function Menubar({ amountMenubar, onclick }) {
   };
   return (
     <div style={styles}>
-      <h2>User name</h2>
+      <h2>
+        {currentUser
+          ? currentUser?.displayName
+            ? currentUser?.displayName
+            : currentUser?.email
+          : ""}
+      </h2>
       <ul
         style={{
           display: "flex",
@@ -33,31 +40,42 @@ function Menubar({ amountMenubar, onclick }) {
       >
         <h3>Menubar</h3>
         <li>
-          <Link to={"/admin"} style={{ textDecoration: "none" }}>
-            <button
-              className="btn btn-black"
-              style={{
-                textTransform: "uppercase",
-              }}
-            >
-              Admin
-            </button>
-          </Link>
+          {currentUser?.displayName?.includes("admin") && (
+            <Link to={"/admin"} style={{ textDecoration: "none" }}>
+              <button
+                className="btn btn-black"
+                style={{
+                  textTransform: "uppercase",
+                }}
+              >
+                Admin
+              </button>
+            </Link>
+          )}
         </li>
         <li>
-          <Link to={"/account/login"} style={{ textDecoration: "none" }}>
-            <button
-              className="btn btn-black"
-              style={{
-                textTransform: "uppercase",
-              }}
-            >
-              login | logout
-            </button>
-          </Link>
+          <button
+            className="btn btn-black"
+            style={{
+              textTransform: "uppercase",
+            }}
+            onClick={() => {
+              signOut(auth);
+            }}
+          >
+            {!currentUser && (
+              <Link
+                to={"/account/login"}
+                style={{ textDecoration: "none", color: "white" }}
+              >
+                Login
+              </Link>
+            )}
+            {currentUser ? "Logout" : ""}
+          </button>
         </li>
       </ul>
-      <Link to={"/account/login"} style={{ textDecoration: "none" }}>
+      {/* <Link to={"/account/login"} style={{ textDecoration: "none" }}>
         <button
           className="btn btn-black"
           style={{
@@ -67,7 +85,7 @@ function Menubar({ amountMenubar, onclick }) {
         >
           login | logout
         </button>
-      </Link>
+      </Link> */}
       <button className=" btn btn-cross" onClick={onclick}>
         x
       </button>

@@ -1,10 +1,10 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { datas } from "../../data/data";
+import watch from "../../assets/watch.png";
 export const SELECTION = {
   toggle: "TOGGLE",
   deleteAll: "DELETE",
 };
-export const allDatas = createContext(datas);
+export const allDatas = createContext([]);
 
 export const CartContext = createContext();
 
@@ -15,8 +15,8 @@ export function useCartContext() {
   // done toggle items
   function toggleItems(id) {
     setNewData(() => {
-      return newData.map((ele) => {
-        if (id == ele.itemID) {
+      return newData.map((ele, uid) => {
+        if (id == uid) {
           return {
             ...ele,
             isSelected: ele?.isSelected ? false : !ele?.isSelected,

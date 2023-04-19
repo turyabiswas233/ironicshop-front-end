@@ -11,6 +11,7 @@
 .logo {
     font-weight: 700;
     color: black;
+    margin-left: 1rem;
 }
 
 /* admin top bar */
@@ -41,6 +42,63 @@
     gap: 20px;
     border-right: 1px solid black;
     width: 313px;
+    background-color: white;
+}
+
+.adminNavbar .crossNav {
+    display: none;
+    pointer-events: none;
+}
+
+.hid-menu {
+    display: none;
+}
+
+@media screen and (max-width: 720px) {
+    .adminNavbar {
+        position: absolute;
+        left: -50%;
+        top: 0;
+        z-index: 1000;
+        height: 100dvh;
+        transition: all .4s ease-in-out;
+        padding: 2.85rem 2rem 2rem;
+
+    }
+
+    .adminNavbar.active {
+        left: 0%;
+    }
+
+    .adminNavbar .crossNav {
+        display: inline-block;
+        position: absolute;
+        right: 10px;
+        top: 7px;
+        pointer-events: none;
+        width: 20px;
+        height: 20px;
+        background: #ff8f5b;
+        border-radius: 50px;
+        color: #fff;
+        font-weight: 700;
+        border: 0;
+        text-align: center;
+        cursor: pointer;
+        pointer-events: all;
+        transition: all .2s ease-in-out;
+
+    }
+
+    .crossNav:hover {
+        background-color: #eb6222;
+    }
+
+
+
+    .hid-menu {
+        display: block;
+    }
 }
 
 .adminNavbar button {
@@ -100,6 +158,12 @@
     position: relative;
 }
 
+@media screen and (max-width: 720px) {
+    .adminRouteBox {
+        margin-left: 5%;
+    }
+}
+
 .adminRouteBox .routeName {
     padding: 1rem 20pt;
     text-transform: capitalize;
@@ -123,6 +187,7 @@
 
 .users-box td.username {
     text-align: left;
+    flex: 2;
 }
 
 /* product box */
@@ -145,6 +210,7 @@ table thead {
     background-color: #fff;
     position: sticky;
     top: 0%;
+
 }
 
 tr th {
@@ -157,21 +223,79 @@ tr th:last-child {
     border-right: none;
 }
 
+.popcard {
+    position: fixed;
+    top: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #0b0d29cc;
+    width: 80%;
+    height: 80%;
+    max-width: 600px;
+    max-height: 700px;
+    z-index: 140;
+    border-radius: 25px;
+    color: white;
+    padding: 1rem;
+}
 
+.popcard header h2 {
+    text-align: center;
+    color: greenyellow;
+    text-transform: uppercase;
+}
 
-table tbody td {
+.popcard .addItemForm {
+    display: grid;
+}
+
+.addItemForm section {
+    display: flex;
+    gap: 10pt;
+    margin: 2pt 5pt;
+    background: #fff;
+    position: relative;
+    align-items: center;
+    border-radius: 5px;
+    padding: 5pt;
+}
+
+.addItemForm section label {
+    color: black;
+    margin-left: 10px;
+    right: 5pt;
+    flex-basis: 150px;
+    position: relative;
+
+}
+
+.addItemForm section label::after {
+    content: ":";
+    position: absolute;
+    right: 0;
+}
+
+.addItemForm .btn-add {
+    margin: 20px auto;
+    width: fit-content;
+    padding: .5rem 2rem;
+    border: 0;
+    cursor: pointer;
+    border-radius: .35rem;
+    font-weight: 600;
+    font-size: 1.15rem;
+}
+
+.addItemForm section input,
+.addItemForm section input {
+    outline: none;
+    border: 0;
+    padding: 8pt 5pt;
+}
+
+.addItemForm section table tbody td {
     text-align: center;
     border-bottom: 1px solid #4D4D4D;
     margin-bottom: 20px;
-}
-
-.adminGrad {
-    position: absolute;
-    content: "";
-    bottom: 0%;
-    left: 0;
-    width: 100%;
-    height: 50px;
-    background-image: linear-gradient(0deg, white, transparent);
-    pointer-events: none;
+    padding: .25rem 0;
 }
