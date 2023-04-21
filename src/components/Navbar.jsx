@@ -8,6 +8,7 @@ import p2user from "../assets/tools/icons/profile2user.png";
 import search from "../assets/tools/icons/search.png";
 import { Link } from "react-router-dom";
 import Menubar from "./Menubar";
+import MessengerChat from "./MessengerChat";
 function Navbar({ showSearch, searchKey, setSearchKey }) {
   const [menubar, setMenubar] = useState(false);
   const [num, setNum] = useState(0);
@@ -35,12 +36,6 @@ function Navbar({ showSearch, searchKey, setSearchKey }) {
           <section className="right">
             {/* product location track  */}
 
-            {/* chat with delivery man */}
-            <Link to={"/chat"}>
-              <button className="btn btn-basic">
-                <img src={message} alt="" />
-              </button>
-            </Link>
             {/* checkout your cart  */}
             <Link to={"/yourcart"} title={"Checkout cart"}>
               <button className="btn btn-basic cart">

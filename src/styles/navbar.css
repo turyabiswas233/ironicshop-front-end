@@ -155,3 +155,23 @@
     justify-content: center;
     align-items: center;
 }
+
+.fb-customerchat {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: #7754d4;
+
+    padding: 5pt;
+    width: 50px;
+    height: 50px;
+    border-radius: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.fb-customerchat img {
+    border-radius: 500px;
+
+}

@@ -8,6 +8,8 @@ import Buynow from "./components/buy_status/Buynow";
 import Signup from "./components/account/signup";
 import { useAuthContext } from "./components/Hooks/firebase/AuthContext";
 import CompleteUserForm from "./components/account/CompleteUserForm";
+import MessengerChat from "./components/MessengerChat";
+
 function App() {
   const Home = lazy(() => import("./components/Home"));
   const Login = lazy(() => import("./components/account/login/index"));
@@ -119,7 +121,7 @@ function App() {
           path={"/c_yourprofile"}
         />
       </Routes>
-
+      <MessengerChat />
       <Footer />
     </div>
   );
