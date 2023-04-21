@@ -26,7 +26,7 @@
     padding-right: 4pt;
     overflow-y: auto;
     display: grid;
-    grid-template-columns: repeat(1, auto auto);
+    grid-template-columns: repeat(1, auto);
     gap: 10pt;
     justify-content: space-evenly;
     align-items: normal;
@@ -133,6 +133,9 @@ button.btn-m-0 {
 }
 
 @media (width>720px) {
+    .sect form {
+        grid-template-columns: repeat(1, auto auto);
+    }
 
     .buy_card main {
         display: flex;

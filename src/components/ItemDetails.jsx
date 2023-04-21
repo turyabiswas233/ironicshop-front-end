@@ -285,8 +285,11 @@ function ItemDetails() {
                     alt=""
                   />
                 </button>
-                <Link to={"/yourcart"} style={{ textDecoration: "none" }}>
-                  <button className="btn btn-black btn-txt-white btn-buy ">
+                <Link to={"/paymentconfirm"} style={{ textDecoration: "none" }}>
+                  <button
+                    className="btn btn-black btn-txt-white btn-buy "
+                    onClick={() => addItem(productDB, productDB?.itemID)}
+                  >
                     Buy Now
                   </button>
                 </Link>

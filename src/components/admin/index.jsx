@@ -4,17 +4,27 @@ import watch from "../../assets/watch.png";
 import menuicon from "../../assets/tools/icons/Menu_icon.png";
 import { Link } from "react-router-dom";
 import { useAuthContext } from "../Hooks/firebase/AuthContext";
-import { doc, serverTimestamp, setDoc } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDocs,
+  query,
+  serverTimestamp,
+  setDoc,
+} from "firebase/firestore";
 import { auth, fdb } from "../../../firebase";
 import { signOut } from "firebase/auth";
 import { useUserContext } from "../Hooks/firebase/UserContext";
-
+import { useLimitData } from "../../data/data";
+import { formatMoneyIntoBDT } from "../Hooks/customHooks";
 // main component
 function Admin() {
   const { currentUser } = useAuthContext();
   const [state, dispatch] = useReducer(reducer, adminNavOptions[0]);
   const [closeNav, setcloseNav] = useState(false);
   const [popUp, setpopUp] = useState(false);
+
+  // functions
   function handlePopUP() {
     setpopUp(!popUp);
   }
@@ -31,9 +41,26 @@ function Admin() {
     }
   }
   const { curUser } = useUserContext();
+
+  const [orders, setOrders] = useState([]);
+  async function getOrders() {
+    const orderRef = query(collection(fdb, "orders"));
+    const snapOrder = await getDocs(orderRef);
+    setOrders([]);
+    snapOrder.forEach((doc) =>
+      setOrders((pre) => [...pre, { id: doc.id, ...doc.data() }])
+    );
+  }
+  useEffect(() => {
+    getOrders();
+  }, []);
   return (
     <div className="admin_root">
-      <AdminTopbar currentUser={currentUser} handleCloseNav={handleCloseNav} />
+      <AdminTopbar
+        currentUser={currentUser}
+        orders={orders}
+        handleCloseNav={handleCloseNav}
+      />
       <div
         style={{
           display: "flex",
@@ -51,6 +78,7 @@ function Admin() {
           routeName={state}
           user={currentUser}
           userInfo={curUser}
+          orders={orders}
         />
       </div>
       {popUp && <PopUpCard handlePopUP={handlePopUP} popUp={popUp} />}
@@ -59,7 +87,7 @@ function Admin() {
 }
 
 // top bar
-const AdminTopbar = ({ currentUser, handleCloseNav }) => {
+const AdminTopbar = ({ currentUser, handleCloseNav, orders }) => {
   return (
     <header>
       <div className="adminTopbar">
@@ -85,7 +113,12 @@ const AdminTopbar = ({ currentUser, handleCloseNav }) => {
           </Link>
         </h2>
         <ul>
-          <li>alarm</li>
+          <li>
+            Notification{" "}
+            <span style={{ color: "red" }}>
+              {orders.length !== 0 && orders?.length}
+            </span>
+          </li>
           <li>
             {currentUser && currentUser?.displayName
               ? currentUser?.displayName
@@ -110,7 +143,13 @@ const AdminNavbar = ({
       <button className="crossNav" onClick={handleCloseNav}>
         x
       </button>
-      <button className="btn btn-black btn-bold btn-p-1" onClick={handlePopUP}>
+      <button
+        className="btn btn-black btn-bold btn-p-1"
+        onClick={() => {
+          handlePopUP();
+          handleCloseNav();
+        }}
+      >
         Add product
       </button>
       <div>
@@ -120,7 +159,10 @@ const AdminNavbar = ({
               <li
                 className={` ${ele == state ? "bg-white" : ""}`}
                 key={id}
-                onClick={() => onclick({ type: ele, payload: ele })}
+                onClick={() => {
+                  onclick({ type: ele, payload: ele });
+                  handleCloseNav();
+                }}
               >
                 {ele}
               </li>
@@ -142,7 +184,7 @@ export default Admin;
 
 // admin route to each section
 
-const AdminRouteBox = ({ routeName, user, userInfo }) => {
+const AdminRouteBox = ({ routeName, user, userInfo, orders }) => {
   const { users } = useUserContext();
 
   return (
@@ -150,7 +192,7 @@ const AdminRouteBox = ({ routeName, user, userInfo }) => {
       {userInfo.admin == true ? (
         <>
           <h1 className="routeName">{routeName}</h1>
-          {routeName == "dashboard" && <Dashboard />}
+          {routeName == "dashboard" && <Dashboard orders={orders} />}
           {routeName == "products" && <Products />}
           {routeName == "sells list" && <Sells />}
           {routeName == "users" && <Users users={users} />}
@@ -168,12 +210,79 @@ const AdminRouteBox = ({ routeName, user, userInfo }) => {
 };
 
 // Dashboard
-const Dashboard = () => {
-  return <div>Dashboard</div>;
+const Dashboard = ({ orders }) => {
+  console.log(orders[0]?.orderdItems[0].newData[0]);
+  return (
+    <div className="dashboard">
+      <table cellSpacing={0}>
+        <thead>
+          <tr className="header">
+            <th>Name</th>
+            <th>Phone</th>
+
+            <th>Email</th>
+            <th>Address</th>
+            <th>Total Price</th>
+            <th>Confirmation</th>
+          </tr>
+        </thead>
+        <tbody>
+          {orders
+            ?.sort((a, b) => {
+              return a.taka - b.taka;
+            })
+            ?.map((product, id) => {
+              return (
+                <>
+                  <tr key={id}>
+                    <td>{product.cust_name}</td>
+                    <td>{product.cust_phone}</td>
+                    <td>{product.cust_email}</td>
+                    <td>{product.cust_add}</td>
+                    <td rowSpan={2}>
+                      {formatMoneyIntoBDT(product.totalPrice)} TK
+                    </td>
+                    <td rowSpan={2}>
+                      <button
+                        className="btn"
+                        style={{ backgroundColor: "#32ef3c" }}
+                      >
+                        Confirm
+                      </button>
+                    </td>
+                  </tr>
+                  <tr className="order">
+                    <td style={{ fontWeight: "bold" }}>Order</td>
+                    <td colSpan={4}>
+                      <ol>
+                        {orders[id]?.orderdItems[0]?.newData?.map(
+                          (data, id1) => {
+                            return (
+                              <li style={{ marginLeft: "15px" }} key={id1}>
+                                {data?.title} : {formatMoneyIntoBDT(data.taka)}{" "}
+                                tk
+                              </li>
+                            );
+                          }
+                        )}
+                      </ol>
+                    </td>
+                  </tr>
+                </>
+              );
+            })}
+        </tbody>
+      </table>
+    </div>
+  );
 };
 
 // Products
 const Products = () => {
+  const { limitdatas, getLimitProducts } = useLimitData();
+  useEffect(() => {
+    getLimitProducts();
+  }, []);
   return (
     <div className="products-box">
       <table cellSpacing={0}>
@@ -189,39 +298,50 @@ const Products = () => {
             <th>Delete</th>
           </tr>
         </thead>
-        <tbody className="users_data">
-          {products.map((product, id) => {
-            return (
-              <tr key={id}>
-                <td>
-                  <img className="w-50" src={product.img} alt="profile" />
-                </td>
+        <tbody>
+          {limitdatas
+            ?.sort((a, b) => {
+              return a.taka - b.taka;
+            })
+            ?.map((product, id) => {
+              return (
+                <tr key={id}>
+                  <td>
+                    {product.img ? (
+                      <img className="w-50" src={product.img} alt="profile" />
+                    ) : (
+                      "null"
+                    )}
+                  </td>
 
-                <td>{product.name}</td>
-                <td>{product.proId}</td>
-                <td>{product.sold}</td>
-                <td>{product.rating}</td>
-                <td>{product.price}</td>
+                  <td>{product.title}</td>
+                  <td>{product.itemID}</td>
+                  <td>{product.sold || 0}</td>
+                  <td>{product.rating || 0}</td>
+                  <td>{formatMoneyIntoBDT(product.taka)} tk</td>
 
-                <td>
-                  <button
-                    className="btn btn-cyan btn-txt-white round-full  "
-                    style={{ fontSize: "1rem" }}
-                  >
-                    Out of stock
-                  </button>
-                </td>
-                <td>
-                  <button
-                    className="btn btn-delete btn-txt-white  round-full"
-                    style={{ fontSize: "1rem" }}
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            );
-          })}
+                  <td>
+                    <button
+                      className="btn btn-txt-white round-full  "
+                      style={{
+                        fontSize: "1rem",
+                        backgroundColor: product.isStock ? "green" : "cyan",
+                      }}
+                    >
+                      {product.isStock ? "in-stock" : "out-of-stock"}
+                    </button>
+                  </td>
+                  <td>
+                    <button
+                      className="btn btn-delete btn-txt-white  round-full"
+                      style={{ fontSize: "1rem" }}
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              );
+            })}
         </tbody>
       </table>
     </div>
@@ -238,6 +358,8 @@ const Users = ({ users }) => {
             <th>#</th>
             <th>Name</th>
             <th>Phone</th>
+            <th>Email</th>
+
             <th>Address</th>
             <th>Block</th>
             <th>Delete</th>
@@ -248,12 +370,14 @@ const Users = ({ users }) => {
             return (
               <tr key={user.id}>
                 <td>
-                  {/* <img className="w-50" src={user.img} alt="profile" /> */}
+                  <img className="w-50" src={watch} alt="profile" />
                 </td>
 
                 <td className="username">{user.f_name}</td>
                 <td>{user.p_num}</td>
+                <td>{user.email}</td>
                 <td>{user.address}</td>
+
                 <td>
                   <button className="btn btn-cyan btn-txt-white  round-full btn-px-2 ">
                     Block
@@ -277,129 +401,6 @@ const Users = ({ users }) => {
 const Ads = () => {
   return <div>Ads</div>;
 };
-
-const products = [
-  {
-    img: watch,
-    name: "Apple 7pro Watch",
-    sold: 1203,
-    rating: 3.4,
-    price: 20300,
-    proId: "#fbhfhg7S",
-  },
-  {
-    img: watch,
-    name: "Apple 7pro Watch",
-    sold: 1203,
-    rating: 3.4,
-    price: 20300,
-    proId: "#fbhfhg7S",
-  },
-  {
-    img: watch,
-    name: "Apple 7pro Watch",
-    sold: 1203,
-    rating: 3.4,
-    price: 20300,
-    proId: "#fbhfhg7S",
-  },
-  {
-    img: watch,
-    name: "Apple 7pro Watch",
-    sold: 1203,
-    rating: 3.4,
-    price: 20300,
-    proId: "#fbhfhg7S",
-  },
-  {
-    img: watch,
-    name: "Apple 7pro Watch",
-    sold: 1203,
-    rating: 3.4,
-    price: 20300,
-    proId: "#fbhfhg7S",
-  },
-  {
-    img: watch,
-    name: "Apple 7pro Watch",
-    sold: 1203,
-    rating: 3.4,
-    price: 20300,
-    proId: "#fbhfhg7S",
-  },
-  {
-    img: watch,
-    name: "Apple 7pro Watch",
-    sold: 1203,
-    rating: 3.4,
-    price: 20300,
-    proId: "#fbhfhg7S",
-  },
-  {
-    img: watch,
-    name: "Apple 7pro Watch",
-    sold: 1203,
-    rating: 3.4,
-    price: 20300,
-    proId: "#fbhfhg7S",
-  },
-  {
-    img: watch,
-    name: "Apple 7pro Watch",
-    sold: 1203,
-    rating: 3.4,
-    price: 20300,
-    proId: "#fbhfhg7S",
-  },
-  {
-    img: watch,
-    name: "Apple 7pro Watch",
-    sold: 1203,
-    rating: 3.4,
-    price: 20300,
-    proId: "#fbhfhg7S",
-  },
-  {
-    img: watch,
-    name: "Apple 7pro Watch",
-    sold: 1203,
-    rating: 3.4,
-    price: 20300,
-    proId: "#fbhfhg7S",
-  },
-  {
-    img: watch,
-    name: "Apple 7pro Watch",
-    sold: 1203,
-    rating: 3.4,
-    price: 20300,
-    proId: "#fbhfhg7S",
-  },
-  {
-    img: watch,
-    name: "Apple 7pro Watch",
-    sold: 1203,
-    rating: 3.4,
-    price: 20300,
-    proId: "#fbhfhg7S",
-  },
-  {
-    img: watch,
-    name: "Apple 7pro Watch",
-    sold: 1203,
-    rating: 3.4,
-    price: 20300,
-    proId: "#fbhfhg7S",
-  },
-  {
-    img: watch,
-    name: "Apple 7pro Watch",
-    sold: 1203,
-    rating: 3.4,
-    price: 20300,
-    proId: "#fbhfhg7S",
-  },
-];
 
 const AdminRequest = ({ user }) => {
   const [admin, setAdmin] = useState({
@@ -496,6 +497,7 @@ const PopUpCard = ({ handlePopUP, popUp }) => {
         rate: 0,
         type: type,
         itemID: itemID,
+        isStock: true,
       })
         .then(() => {
           setload(false);

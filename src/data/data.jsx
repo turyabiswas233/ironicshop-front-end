@@ -1,14 +1,6 @@
 import { useState } from "react";
 
-import {
-  collection,
-  doc,
-  getDocs,
-  query,
-  limit,
-  orderBy,
-  getDoc,
-} from "firebase/firestore";
+import { collection, getDocs, query, limit, orderBy } from "firebase/firestore";
 import { fdb } from "../../firebase";
 function useFullData() {
   const [datas, setdatas] = useState([]);

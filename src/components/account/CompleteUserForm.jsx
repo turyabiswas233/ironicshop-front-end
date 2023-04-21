@@ -28,6 +28,7 @@ function CompleteUserForm() {
         f_name: userLoginInfo.fullname,
         p_num: "+88" + userLoginInfo.phnumber,
         address: userLoginInfo.address,
+        email: currentUser.email,
         timestamp: serverTimestamp(),
         admin: false,
       })

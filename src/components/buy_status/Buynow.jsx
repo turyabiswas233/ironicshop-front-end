@@ -49,6 +49,7 @@ function Buynow() {
           cust_email: customer.email,
           cust_phone: customer.mobile,
           cust_add: customer.address,
+          totalPrice: price,
           orderedtime: serverTimestamp(),
           orderdItems: arrayUnion({ newData }),
         })

@@ -223,6 +223,22 @@ tr th:last-child {
     border-right: none;
 }
 
+tr td {
+    text-align: center;
+    border-bottom: 1pt dashed #f77429;
+    padding-top: 5pt;
+    padding-bottom: 5pt;
+}
+
+.dashboard tr td {
+    border: 0;
+}
+
+.dashboard tr>td:last-child,
+tr.order td {
+    border-bottom: 1pt dashed #f77429
+}
+
 .popcard {
     position: fixed;
     top: 50px;
