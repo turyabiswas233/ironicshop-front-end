@@ -5,6 +5,9 @@ import menuicon from "../../assets/tools/icons/Menu_icon.png";
 import { Link } from "react-router-dom";
 import { useAuthContext } from "../Hooks/firebase/AuthContext";
 import {
+  Firestore,
+  addDoc,
+  arrayUnion,
   collection,
   doc,
   getDocs,
@@ -17,6 +20,9 @@ import { signOut } from "firebase/auth";
 import { useUserContext } from "../Hooks/firebase/UserContext";
 import { useLimitData } from "../../data/data";
 import { formatMoneyIntoBDT } from "../Hooks/customHooks";
+// react icons
+import { MdNotificationsActive } from "react-icons/md";
+
 // main component
 function Admin() {
   const { currentUser } = useAuthContext();
@@ -81,7 +87,6 @@ function Admin() {
           orders={orders}
         />
       </div>
-      {popUp && <PopUpCard handlePopUP={handlePopUP} popUp={popUp} />}
     </div>
   );
 }
@@ -114,7 +119,7 @@ const AdminTopbar = ({ currentUser, handleCloseNav, orders }) => {
         </h2>
         <ul>
           <li>
-            Notification{" "}
+            <MdNotificationsActive />
             <span style={{ color: "red" }}>
               {orders.length !== 0 && orders?.length}
             </span>
@@ -131,13 +136,7 @@ const AdminTopbar = ({ currentUser, handleCloseNav, orders }) => {
 };
 
 // ;left navbar
-const AdminNavbar = ({
-  state,
-  onclick,
-  handleCloseNav,
-  closeNav,
-  handlePopUP,
-}) => {
+const AdminNavbar = ({ state, onclick, handleCloseNav, closeNav }) => {
   return (
     <div className={`adminNavbar ${closeNav ? "active" : ""}`}>
       <button className="crossNav" onClick={handleCloseNav}>
@@ -146,7 +145,8 @@ const AdminNavbar = ({
       <button
         className="btn btn-black btn-bold btn-p-1"
         onClick={() => {
-          handlePopUP();
+          onclick({ type: "addProduct", payload: "addProduct" });
+
           handleCloseNav();
         }}
       >
@@ -197,6 +197,7 @@ const AdminRouteBox = ({ routeName, user, userInfo, orders }) => {
           {routeName == "sells list" && <Sells />}
           {routeName == "users" && <Users users={users} />}
           {routeName == "ads" && <Ads />}
+          {routeName == "addProduct" && <PopUpCard />}
         </>
       ) : (
         <>
@@ -211,68 +212,56 @@ const AdminRouteBox = ({ routeName, user, userInfo, orders }) => {
 
 // Dashboard
 const Dashboard = ({ orders }) => {
-  console.log(orders[0]?.orderdItems[0].newData[0]);
   return (
     <div className="dashboard">
-      <table cellSpacing={0}>
-        <thead>
-          <tr className="header">
-            <th>Name</th>
-            <th>Phone</th>
-
-            <th>Email</th>
-            <th>Address</th>
-            <th>Total Price</th>
-            <th>Confirmation</th>
-          </tr>
-        </thead>
-        <tbody>
-          {orders
-            ?.sort((a, b) => {
-              return a.taka - b.taka;
-            })
-            ?.map((product, id) => {
-              return (
-                <>
-                  <tr key={id}>
-                    <td>{product.cust_name}</td>
-                    <td>{product.cust_phone}</td>
-                    <td>{product.cust_email}</td>
-                    <td>{product.cust_add}</td>
-                    <td rowSpan={2}>
-                      {formatMoneyIntoBDT(product.totalPrice)} TK
-                    </td>
-                    <td rowSpan={2}>
-                      <button
-                        className="btn"
-                        style={{ backgroundColor: "#32ef3c" }}
-                      >
-                        Confirm
-                      </button>
-                    </td>
-                  </tr>
-                  <tr className="order">
-                    <td style={{ fontWeight: "bold" }}>Order</td>
-                    <td colSpan={4}>
-                      <ol>
-                        {orders[id]?.orderdItems[0]?.newData?.map(
-                          (data, id1) => {
-                            return (
-                              <li style={{ marginLeft: "15px" }} key={id1}>
-                                {data?.title} : {formatMoneyIntoBDT(data.taka)}{" "}
-                                tk
-                              </li>
-                            );
-                          }
-                        )}
-                      </ol>
-                    </td>
-                  </tr>
-                </>
-              );
-            })}
-        </tbody>
-      </table>
+      {orders
+        ?.sort((a, b) => {
+          return a.taka - b.taka;
+        })
+        ?.map((product, id) => {
+          return (
+            <div className="root" key={id}>
+              <div>
+                <p>
+                  Name: <b>{product.cust_name}</b>
+                </p>
+                <p>
+                  Phone: <b>{product.cust_phone}</b>
+                </p>
+                <p>
+                  Email: <b>{product.cust_email}</b>
+                </p>
+                <p>
+                  Address: <b>{product.cust_add}</b>
+                </p>
+                <p>
+                  Total Price:{" "}
+                  <b>{formatMoneyIntoBDT(product.totalPrice + 100)} TK </b>
+                </p>
+              </div>
+              <div className="order">
+                <h3 style={{ fontWeight: "bold" }}>Order</h3>
+                <section colSpan={4}>
+                  <ol>
+                    {orders[id]?.orderdItems[0]?.newData?.map((data, id1) => {
+                      return (
+                        <li style={{ marginLeft: "15px" }} key={id1}>
+                          {data?.title} : {formatMoneyIntoBDT(data.taka)} tk
+                        </li>
+                      );
+                    })}
+                  </ol>
+                </section>
+                <button
+                  className="btn"
+                  style={{ backgroundColor: "#32ef3c", margin: ".5rem auto" }}
+                >
+                  Confirm
+                </button>
+              </div>
+            </div>
+          );
+        })}
     </div>
   );
 };
@@ -281,7 +270,14 @@ const Dashboard = ({ orders }) => {
 const Products = () => {
   const { limitdatas, getLimitProducts } = useLimitData();
   useEffect(() => {
-    getLimitProducts();
+    let oldData = JSON.parse(localStorage.getItem("allProd"));
+
+    getLimitProducts(oldData).then(() => {
+      localStorage.setItem(
+        "allProd",
+        JSON.stringify({ time: new Date().getTime(), list: limitdatas })
+      );
+    });
   }, []);
   return (
     <div className="products-box">
@@ -463,14 +459,21 @@ const AdminRequest = ({ user }) => {
 };
 
 // popup for add a item
-const PopUpCard = ({ handlePopUP, popUp }) => {
+const PopUpCard = () => {
   // items info
   const [title, settitle] = useState("");
+  const [brand, setbrand] = useState("");
+  const [size, setsize] = useState("");
+  const [sizeArr, setSizeArr] = useState([]);
   const [taka, settaka] = useState("");
-  const [type, settype] = useState("");
+  const [color, setcolor] = useState("");
+  const [descript, setdescript] = useState("");
+  const [type, settype] = useState("choose a category");
   const [load, setload] = useState(false);
   const [itemID, setItemID] = useState("");
   const [error, setErr] = useState("");
+  const [showCata, setcata] = useState(false);
+  const catArr = ["monitor", "mobile", "pant", "t-shirt", "bag", "sunglass"];
 
   const Spinner = () => {
     return (
@@ -489,13 +492,17 @@ const PopUpCard = ({ handlePopUP, popUp }) => {
     if (title && taka && type && itemID) {
       setload(true);
 
-      await setDoc(doc(fdb, `products/${itemID + type}`), {
+      await addDoc(doc(fdb, `products/${itemID + type}`), {
         title: title,
         img: null,
         taka: Number(taka),
         isSelected: false,
         rate: 0,
+        brand: brand,
+        size: arrayUnion({ sizeArr }),
+        color: color,
         type: type,
+        desc: descript,
         itemID: itemID,
         isStock: true,
       })
@@ -512,77 +519,148 @@ const PopUpCard = ({ handlePopUP, popUp }) => {
     } else {
       setErr("Something wrong, please try again or later");
       alert(error);
+      console.log(title, itemID, taka, type);
       setload(false);
     }
+  }
+  function handleCata() {
+    setcata(!showCata);
+  }
+  function handleType(tp) {
+    settype(tp);
+  }
+  function handlePushSize() {
+    if (size.length !== 0) setSizeArr((pre) => [...pre, size]);
+    setsize("");
   }
   return (
     <>
       <div className="popcard">
-        <header>
-          <h2>add a product</h2>
-          <button className="btn-cross" onClick={handlePopUP}>
-            x
-          </button>
-        </header>
         <form className="addItemForm" onSubmit={addAnItem}>
-          {/* title */}
-          <section className="">
-            <label htmlFor="name">Product Name </label>
-            <input
-              required
-              type="text"
-              id="name"
-              value={title}
-              onChange={(e) => {
-                settitle(e.target.value);
-              }}
-            />
-          </section>
-          {/* image */}
-          <section className="">
-            <label htmlFor="img">image </label>
-            <input type="text" id="img" />
-          </section>
-          {/* type */}
-          <section className="">
-            <label htmlFor="type">Type </label>
-            <input
-              required
-              value={type}
-              onChange={(e) => settype(e.target.value)}
-              type="text"
-              id="type"
-            />
-          </section>
-          {/* itemID */}
-          <section className="">
-            <label htmlFor="itemID">Item ID </label>
-            <input
-              type="text"
-              value={itemID}
-              disabled
-              name="itemID"
-              id="itemID"
-            />
-          </section>
-          {/* taka */}
-          <section className="">
-            <label htmlFor="taka">
-              Price <small>(BDT)</small>{" "}
-            </label>
-            <input
-              required
-              value={taka}
-              onChange={(e) => settaka(e.target.value)}
-              type="number"
-              id="taka"
-            />
-          </section>
-          <button
-            className=" btn-red btn-txt-white btn-add"
-            type="submit"
-            disabled={load}
-          >
+          <div className="left">
+            <section className="field">
+              <label htmlFor="pName">Product name</label>
+              <input
+                type="text"
+                name="pName"
+                id="pName"
+                required
+                value={title}
+                onChange={(e) => settitle(e.target.value)}
+                maxLength={50}
+              />
+              <span>
+                Don't exceed 50 characters when entering the product name
+              </span>
+            </section>
+
+            <section className="field">
+              <label htmlFor="pCata">Category</label>
+              <article className="cata">
+                <p onClick={handleCata}>{type}</p>
+                {showCata && (
+                  <ul className="cata-list">
+                    {catArr
+                      .sort((a, b) => {
+                        let x = a.toLocaleLowerCase();
+                        let y = b.toLocaleLowerCase();
+                        if (x > y) return 1;
+                        else return -1;
+                      })
+                      .map((cata, id) => {
+                        return (
+                          <li
+                            key={id}
+                            onClick={() => {
+                              handleType(cata);
+                              handleCata();
+                            }}
+                          >
+                            {cata}
+                          </li>
+                        );
+                      })}
+                  </ul>
+                )}
+              </article>
+            </section>
+            {/* brand */}
+            <section className="field">
+              <label htmlFor="brand">Brand</label>
+              <input
+                type="text"
+                name="brand"
+                id="brand"
+                required
+                value={brand}
+                onChange={(e) => setbrand(e.target.value)}
+              />
+            </section>
+            {/* size */}
+            <section className="field">
+              <label htmlFor="Size">Size</label>
+              <div className="size">
+                <input
+                  type="text"
+                  name="Size"
+                  id="Size"
+                  value={size}
+                  onChange={(e) => setsize(e.target.value)}
+                />
+                <button
+                  className="btn-size "
+                  type="button"
+                  onClick={handlePushSize}
+                >
+                  Select
+                </button>
+              </div>
+              <ul style={{ display: "flex", gap: "2.5pt" }}>
+                {sizeArr.map((ele, id) => (
+                  <li
+                    style={{
+                      margin: "0",
+                      backgroundColor: "#5555",
+                      borderRadius: "50px",
+                      minWidth: "60px",
+                      height: "auto",
+                      textAlign: "center",
+                    }}
+                    key={id}
+                  >
+                    {ele}
+                  </li>
+                ))}
+              </ul>
+            </section>
+            {/* taka */}
+            <section className="field">
+              <label htmlFor="taka">Price</label>
+              <input
+                type="text"
+                name="taka"
+                id="taka"
+                required
+                value={taka}
+                onChange={(e) => settaka(e.target.value)}
+              />
+            </section>
+            {/* description */}
+            <section className="field">
+              <label>Description</label>
+              <textarea
+                name="desc"
+                id="desc"
+                cols="30"
+                rows="10"
+                value={descript}
+                maxLength={250}
+                onChange={(e) => setdescript(e.target.value)}
+              ></textarea>
+              {`(${descript.length}/250)`}
+            </section>
+          </div>
+          <button className="btn-add" type="submit" disabled={load}>
             {load ? <Spinner /> : "Add"}
           </button>
         </form>

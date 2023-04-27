@@ -1,5 +1,5 @@
 // all components and datas
-import React, { useEffect, useReducer, useState } from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import "react-slideshow-image/dist/styles.css";
 import { Slide } from "react-slideshow-image";
@@ -82,17 +82,19 @@ const Slideshow = () => {
 
 // main function
 function Home() {
-  const { currenUser } = useAuthContext();
-  const { limitdatas, getLimitProducts } = useLimitData();
+  let time = new Date().getTime();
 
+  const { currenUser } = useAuthContext();
+  const { limitdatas, getLimitProducts } = useLimitData(time);
   const { scroll } = useScreenSize();
   const [searchkeyword, setsearchkeyword] = useSearchKey();
-  const items = limitdatas.filter((data) =>
-    data.type.toLowerCase().includes(searchkeyword.toLowerCase())
+  const items = limitdatas?.filter((data) =>
+    data?.type?.toLowerCase()?.includes(searchkeyword?.toLowerCase())
   );
   useEffect(() => {
     getLimitProducts();
   }, []);
+
   return (
     <div
       className="Home"
@@ -112,13 +114,13 @@ function Home() {
       {/* trending products */}
       <div className="trends">
         <h1>Trending Now {currenUser?.email}</h1>
-        {items.length !== 0 && (
+        {items?.length !== 0 && (
           <button className="btn btn-basic btn-m-0">See all</button>
         )}
 
         <section>
-          {items.length !== 0 ? (
-            items.map((data, id) => {
+          {items?.length !== 0 ? (
+            items?.map((data, id) => {
               return <Items key={id} props={data} id={data.id} />;
             })
           ) : (

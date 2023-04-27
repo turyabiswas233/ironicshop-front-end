@@ -13,7 +13,7 @@ function useAuthContext() {
     return () => {
       unsub();
     };
-  }, []);
+  }, [auth]);
   return { currentUser };
 }
 export { useAuthContext };

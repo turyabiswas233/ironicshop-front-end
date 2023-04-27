@@ -4,10 +4,11 @@ import {
   doc,
   getDoc,
   getDocs,
+  onSnapshot,
   query,
   where,
 } from "firebase/firestore";
-import { fdb } from "../../../../firebase";
+import { auth, fdb } from "../../../../firebase";
 import { useAuthContext } from "./AuthContext";
 
 const useUserContext = () => {
@@ -16,6 +17,7 @@ const useUserContext = () => {
   async function getUsers() {
     const useref = collection(fdb, "users");
     const q = query(useref, where("admin", "==", false));
+
     const userSnap = await getDocs(q);
     setUsers([]);
     userSnap.docs.map((doc) => setUsers((pre) => [...pre, { ...doc.data() }]));
@@ -26,7 +28,7 @@ const useUserContext = () => {
   useEffect(() => {
     async function getCurUser() {
       try {
-        const snapshot = await getDoc(doc(fdb, "users", currentUser?.uid));
+        const snapshot = await getDoc(doc(fdb, "users", auth.currentUser?.uid));
         setCurUser(snapshot.data());
       } catch (e) {
         console.log("e", e);

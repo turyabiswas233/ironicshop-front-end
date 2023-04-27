@@ -19,36 +19,8 @@ function App() {
 
   const { currentUser } = useAuthContext();
 
-  const AdminInteractBox = () => {
-    return (
-      <>
-        <div
-          style={{
-            position: "fixed",
-            bottom: "30px",
-            left: "50%",
-            transform: "translateX(-50%)",
-            backgroundColor: "#23cffa",
-            padding: ".5rem 3rem",
-            textAlign: "center",
-            width: "70vh",
-            maxWidth: "350px",
-            color: "#112",
-            fontWeight: "bold",
-            letterSpacing: ".72pt",
-            borderRadius: "0 0 .5rem .5rem ",
-            borderBottom: "3pt solid black",
-          }}
-        >
-          You are interacting as admin
-        </div>
-      </>
-    );
-  };
-
   return (
     <div className="App">
-      {currentUser?.displayName?.includes("admin") && <AdminInteractBox />}
       <Routes>
         <Route element={<ErrorPage />} path={"*"} />
         <Route

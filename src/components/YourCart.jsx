@@ -32,7 +32,7 @@ function YourCart() {
   // memo for update of total price
   const totalPrice = useMemo(() => {
     return (
-      <div className={`totalprice mobile`}>
+      <div className={`totalprice `}>
         <section className="left">
           <p>
             Total selected item:{" "}
@@ -92,20 +92,19 @@ function YourCart() {
               No item to show. Please select your product and then visit here
             </h2>
           ) : (
-            <table className="cartTable " cellSpacing={0}>
-              <tbody>
-                {newData?.map((data, id) => {
-                  return (
-                    <EachCart
-                      key={id}
-                      props={data}
-                      id={data?.itemID}
-                      handleToggle={() => handleToggle(data?.itemID)}
-                    />
-                  );
-                })}
-              </tbody>
-            </table>
+            <div className="cartTable ">
+              {newData?.map((data, id) => {
+                return (
+                  <EachCart
+                    key={id}
+                    props={data}
+                    id={data?.itemID}
+                    handleToggle={() => handleToggle(data?.itemID)}
+                    upPrice={updatePrice}
+                  />
+                );
+              })}
+            </div>
           )}
         </section>
       </div>

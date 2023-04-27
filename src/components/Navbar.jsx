@@ -2,14 +2,15 @@ import React, { useEffect, useState } from "react";
 import { addToCart_LocalStorage } from "./Hooks/customHooks";
 // icons
 import hamburger from "../assets/tools/icons/Menu_icon.png";
-import message from "../assets/tools/icons/message_icon.png";
 import shopping from "../assets/tools/icons/shoppingcart.png";
 import p2user from "../assets/tools/icons/profile2user.png";
 import search from "../assets/tools/icons/search.png";
 import { Link } from "react-router-dom";
 import Menubar from "./Menubar";
-import MessengerChat from "./MessengerChat";
+import { auth } from "../../firebase";
 function Navbar({ showSearch, searchKey, setSearchKey }) {
+  const cUser = auth.currentUser;
+
   const [menubar, setMenubar] = useState(false);
   const [num, setNum] = useState(0);
   const handleManubar = () => {
@@ -19,6 +20,7 @@ function Navbar({ showSearch, searchKey, setSearchKey }) {
   useEffect(() => {
     setNum(JSON.parse(lcoal_storage.getItem(cartRef))?.length);
   }, [lcoal_storage.getItem(cartRef)]);
+
   return (
     <>
       <div className={`navbar `}>
@@ -70,11 +72,24 @@ function Navbar({ showSearch, searchKey, setSearchKey }) {
               )}
             </button>
           </section>
-          <section className="p2user">
-            <button className="btn btn-pink btn-circle">
-              <img src={p2user} alt="" />
-            </button>
-          </section>
+
+          {cUser && (
+            <section className="p2user">
+              <Link to={"/your_profile"}>
+                <button
+                  style={{
+                    backgroundColor: "pink",
+                    borderRadius: "500px",
+                    border: "0",
+                    padding: "5pt",
+                    cursor: "pointer",
+                  }}
+                >
+                  <img width={25} src={p2user} alt="" />
+                </button>
+              </Link>
+            </section>
+          )}
         </div>
         {/* nav catagory show */}
         <div className={`catagory `}>

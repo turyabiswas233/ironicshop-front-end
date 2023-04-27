@@ -4,26 +4,29 @@ import shoppingcart from "../assets/tools/icons/shoppingcart.png";
 import watch from "../assets/watch.png";
 import send from "../assets/tools/icons/send.png";
 // react functions and custom hooks
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
   formatMoneyIntoBDT,
   addToCart_LocalStorage,
 } from "./Hooks/customHooks";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Slide } from "react-slideshow-image";
-import { fdb } from "../../firebase";
+import { auth, fdb } from "../../firebase";
 import { doc, getDoc } from "firebase/firestore";
 
 function ItemDetails() {
   const id = location.pathname;
+  const currentUser = auth.currentUser;
 
-  const { cartRef, lcoal_storage, addItem } = addToCart_LocalStorage();
+  const { cartRef, addItem } = addToCart_LocalStorage();
   const [productDB, setProDB] = useState({});
+  const [sizeArr, setsizearr] = useState([]);
 
   async function getItemDetails(id) {
     const itemDoc = doc(fdb, `products/${id}`);
     const item = await getDoc(itemDoc);
     setProDB(item.data());
+    setsizearr(item.data()?.size[0]?.sizeArr);
   }
 
   const [scroll, setScroll] = useState(0);
@@ -31,7 +34,7 @@ function ItemDetails() {
     const arrID = id.slice(6, -1) + id.slice(-1);
 
     getItemDetails(arrID).catch((err) => {
-      alert(err.message);
+      console.log(err.message);
     });
   }, []);
 
@@ -45,7 +48,7 @@ function ItemDetails() {
       window.addEventListener("scroll", (e) => {
         showScrollY();
       });
-      window.removeEventListener("scroll", showScrollY());
+      return window.removeEventListener("scroll", showScrollY());
     }
   }, []);
 
@@ -139,7 +142,7 @@ function ItemDetails() {
       </div>
     );
   };
-  if (productDB)
+  const productDetails = useMemo(() => {
     return (
       <div className="itemDetails">
         <header
@@ -219,119 +222,132 @@ function ItemDetails() {
             <img src={productDB?.img ? productDB?.img : watch} alt="" />
           </section>
           <div className="details">
-            <section className="info">
-              <h2 className="title">{productDB?.title} Not for sale.</h2>
-              <h2 className="pro_id">
-                Product ID: <span> {productDB?.itemID}</span>
-              </h2>
-              {productDB?.rate ? (
-                <span className="rating">
-                  <Star />
-                  {productDB?.rate}
-                  {"/5"}
-                </span>
-              ) : (
-                <span className="rating">New</span>
-              )}
-              <p>
-                {productDB?.title} is a wearable {productDB?.type} that allows
-                users to accomplish a variety of tasks, including making phone
-                calls, sending text messages and reading email ...{" "}
-                <span style={{ color: "blue" }}>more</span>
-              </p>
-            </section>
-            <section className="size">
-              <hr className="hr" />
-              <h3>size</h3>
-              <ul>
-                <li>40mm</li>
-                <li>42mm</li>
-                <li>44mm</li>
-                <li>46mm</li>
-              </ul>
-            </section>
-            <section className="avail_col">
-              <hr className="hr" />
-              <h2>Available color</h2>
-              <ul>
-                <li className="pink"></li>
-                <li className="violet"></li>
-                <li className="blue"></li>
-                <li className="green"></li>
-              </ul>
-            </section>
-            <section className="price">
-              <p>
-                <span className="taka">BDT</span>
-                {formatMoneyIntoBDT(productDB?.taka)}
-              </p>
-              <article>
-                <button
-                  className="btn btn-cart"
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                  }}
-                  onClick={() => addItem(productDB, productDB?.itemID)}
-                >
-                  {JSON.parse(localStorage.getItem(cartRef))?.find(
-                    (data) => data?.itemID == productDB?.itemID
-                  )
-                    ? "In the cart"
-                    : "Add to cart"}
-                  <img
-                    style={{ filter: "invert(1)", marginLeft: "4pt" }}
-                    src={shoppingcart}
-                    alt=""
-                  />
-                </button>
-                <Link to={"/paymentconfirm"} style={{ textDecoration: "none" }}>
+            <div className="flex-box-left">
+              <section className="info">
+                <h2 className="title">{productDB?.title} </h2>
+                <h2 className="pro_id">
+                  Product ID: <span> {productDB?.itemID}</span>
+                </h2>
+                {productDB?.rate ? (
+                  <span className="rating">
+                    <Star />
+                    {productDB?.rate}
+                    {"/5"}
+                  </span>
+                ) : (
+                  <span className="rating">New</span>
+                )}
+                <p>
+                  {productDB?.desc}
+                  <span style={{ color: "blue" }}>more</span>
+                </p>
+              </section>
+              <section className="size">
+                <hr className="hr" />
+                <h3>size</h3>
+                <ul>
+                  {sizeArr?.map((size, szid) => {
+                    return <li key={szid}>{size}</li>;
+                  })}
+                </ul>
+              </section>
+              <section className="avail_col">
+                <hr className="hr" />
+                <h2>Available color</h2>
+                <ul>
+                  <li className="pink"></li>
+                  <li className="violet"></li>
+                  <li className="blue"></li>
+                  <li className="green"></li>
+                </ul>
+              </section>
+              <section className="price">
+                <p>
+                  <span className="taka">BDT</span>
+                  {formatMoneyIntoBDT(productDB?.taka)}
+                </p>
+                <article>
                   <button
-                    className="btn btn-black btn-txt-white btn-buy "
+                    className="btn btn-cart"
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                    }}
                     onClick={() => addItem(productDB, productDB?.itemID)}
                   >
-                    Buy Now
+                    {JSON.parse(localStorage.getItem(cartRef))?.find(
+                      (data) => data?.itemID == productDB?.itemID
+                    )
+                      ? "In the cart"
+                      : "Add to cart"}
+                    <img
+                      style={{ filter: "invert(1)", marginLeft: "4pt" }}
+                      src={shoppingcart}
+                      alt=""
+                    />
                   </button>
-                </Link>
-              </article>
-            </section>
-            <section className="review">
-              <header className="review_root_head">
-                <h2>Review</h2>
-                {productDB?.rate && (
-                  <span className="rating">
-                    {starW}
-                    {`${productDB?.rate}/5`}
-                  </span>
-                )}
-              </header>
-              <hr />
-              {<Review />}
-              {<Review />}
-            </section>
+                  <Link
+                    to={"/paymentconfirm"}
+                    style={{ textDecoration: "none" }}
+                  >
+                    <button
+                      className="btn btn-black btn-txt-white btn-buy "
+                      onClick={() => addItem(productDB, productDB?.itemID)}
+                    >
+                      Buy Now
+                    </button>
+                  </Link>
+                </article>
+              </section>
+            </div>
+            <div className="flex-box-right">
+              <section className="review">
+                <header className="review_root_head">
+                  <h2>Review</h2>
+                  {productDB?.rate && (
+                    <span className="rating">
+                      {starW}
+                      {`${productDB?.rate}/5`}
+                    </span>
+                  )}
+                </header>
+                <hr />
+                {<Review />}
+                {<Review />}
+              </section>
+              {/* question and answer */}
+              {currentUser && (
+                <section className="que_ans">
+                  <article>
+                    <h3>Ask questions</h3>
+                    <hr
+                      style={{
+                        background: "#000",
+                        filter: "contrast(.5)",
+                      }}
+                    />
+                  </article>
+                  <section className="qustion_box">
+                    <input
+                      type="text"
+                      name=""
+                      id=""
+                      placeholder="Type a question..."
+                    />
+                    <button className="btn btn-send" type="submit">
+                      <img src={send} width={20} alt="" />
+                    </button>
+                  </section>
+                </section>
+              )}
+            </div>
           </div>
-        </div>
-
-        {/* question and answer */}
-        <div className="que_ans">
-          <article>
-            <h3>Ask questions</h3>
-            <hr
-              style={{
-                background: "#000",
-                filter: "contrast(.5)",
-              }}
-            />
-          </article>
-          <section className="qustion_box">
-            <input type="text" name="" id="" placeholder="Type..." />
-            <button className="btn btn-send" type="submit">
-              <img src={send} alt="" />
-            </button>
-          </section>
         </div>
       </div>
     );
+  }, [productDB, scroll, currentUser]);
+
+  return <>{productDetails}</>;
 }
 
 export default ItemDetails;

@@ -84,8 +84,9 @@
     padding: 30px 1rem;
 }
 
+
 .details section {
-    padding: 10pt 5pt;
+    padding: 2pt 5pt;
 }
 
 .details section .hr {
@@ -174,22 +175,19 @@
 
 .details section.price {
     display: flex;
+    flex-direction: column;
+    align-items: flex-start;
     justify-content: space-between;
-    align-items: center;
     background: #fff;
     border-radius: 10px;
-}
-
-.details section.price p {
-    position: relative;
-    padding-top: 10px;
-    z-index: 0;
 }
 
 .details section.price p span.taka {
     color: #14A51A;
     position: absolute;
-    top: 10%;
+    top: 50%;
+    right: -25%;
+    transform: translateY(-50%);
     font-size: .825rem;
     font-weight: 400;
     z-index: 0;
@@ -198,19 +196,26 @@
 
 .details section.price article {
     display: flex;
-    align-items: center;
     justify-content: space-between;
+    align-items: center;
     gap: 5px;
     height: 100%;
+    margin-left: auto;
+    margin-right: auto;
 }
+
 
 .details section.price article button {
     height: 100%;
+
 }
 
 .details section.price p {
     font-size: 2.25rem;
+    position: relative;
+    z-index: 0;
     font-weight: bolder;
+    margin: 5px auto;
 }
 
 /* question & answer */
@@ -220,8 +225,10 @@
     margin: 10pt auto;
     border-radius: 10px;
     background-color: #dbf2ff;
-    height: 80vh;
+    height: auto;
+    min-height: 250px;
     display: flex;
+    flex-basis: 2;
     flex-direction: column;
     justify-content: space-between;
 }
@@ -233,10 +240,12 @@
 }
 
 .qustion_box {
-    height: max-content;
+    height: auto;
     padding: 2.5pt 2px;
     background: #fff;
     border-radius: 100px;
+    margin: 5pt auto;
+    width: 100%;
     display: flex;
     justify-content: space-between;
 }
@@ -245,6 +254,7 @@
 .qustion_box input:focus {
     background: transparent !important;
     margin-left: 15pt;
+
     outline: none;
     border: none;
 }
@@ -353,4 +363,50 @@
 .que_ans,
 .review {
     box-shadow: 0 0 30px -15px #111;
+    border-radius: 25px;
+}
+
+/* desktop view */
+@media (width > 720px) {
+    .details {
+        display: flex;
+        justify-content: space-between;
+        flex-basis: 1;
+        flex-wrap: nowrap;
+    }
+
+    .details section.price {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-around;
+    }
+
+    .details section.price article {
+        margin: 0;
+    }
+
+    .details section.price p {
+        margin: 0;
+    }
+
+    .que_ans {
+        height: 100%;
+    }
+
+    .flex-box-left {
+        flex: 1;
+    }
+
+
+
+    .flex-box-right {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        gap: 5pt;
+    }
+
+    .review {
+        height: auto;
+    }
 }

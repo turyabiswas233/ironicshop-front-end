@@ -26,8 +26,7 @@
     padding-right: 4pt;
     overflow-y: auto;
     display: grid;
-    grid-template-columns: repeat(1, auto);
-    gap: 10pt;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
     justify-content: space-evenly;
     align-items: normal;
 }
@@ -37,9 +36,11 @@
     height: fit-content;
 }
 
+
+
 .payment article {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
 }
 
 .payment article .itemsInfo {
@@ -53,7 +54,7 @@
 }
 
 .location {
-    background-color: #F9DEFF;
+    background-color: #F0F0F0;
 
 }
 
@@ -63,7 +64,7 @@
 
 .payment {
     position: relative;
-    background-color: #FFD585;
+    background-color: #F0F0F0;
     overflow-y: auto;
 
 }
@@ -82,19 +83,27 @@ button.btn-m-0 {
     width: fit-content;
     height: fit-content;
     padding: .5rem 1.5rem;
-    position: absolute;
-    right: 5%;
-    bottom: 5%;
+    border: 0;
     cursor: pointer;
+    color: white;
     transition: all .2s ease-in-out;
-    background: #f0f3f5;
+    background: #111;
     font-weight: bold;
     text-transform: capitalize;
-    border: 2.25pt solid #429beed5;
+
+}
+
+section.price {
+    margin: 20pt 0 10px;
+}
+
+hr {
+
+    border-color: #0008;
 }
 
 .buy_card .payment .confirm:hover {
-    background-color: #ffe9ad;
+    background-color: #232323;
 }
 
 .sect .form_box {
@@ -124,7 +133,7 @@ button.btn-m-0 {
 
 .form_box textarea {
     width: 100%;
-    height: 50px;
+    height: 100px;
     outline: none;
     border: none;
     padding: 5px;
@@ -134,7 +143,7 @@ button.btn-m-0 {
 
 @media (width>720px) {
     .sect form {
-        grid-template-columns: repeat(1, auto auto);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     .buy_card main {
@@ -154,15 +163,9 @@ button.btn-m-0 {
 
     }
 
-    .payment article {
-        flex-direction: column;
-    }
+
 
     .payment article .itemsInfo {
         margin-top: 1cm;
     }
 }
-
-
-
-/* login alert box */

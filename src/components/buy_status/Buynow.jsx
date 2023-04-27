@@ -30,7 +30,11 @@ function Buynow() {
     console.log(c_name);
     setcustomer((pre) => ({
       ...pre,
-      tokenID: c_name[0].toUpperCase() + date.getFullYear(),
+      tokenID:
+        customer.name &&
+        c_name[0].toUpperCase() +
+          Math.floor(Math.random() * 100) +
+          date.getDate(),
     }));
   }, [customer.name]);
 
@@ -49,7 +53,7 @@ function Buynow() {
           cust_email: customer.email,
           cust_phone: customer.mobile,
           cust_add: customer.address,
-          totalPrice: price,
+          totalPrice: price + 90,
           orderedtime: serverTimestamp(),
           orderdItems: arrayUnion({ newData }),
         })
@@ -67,7 +71,7 @@ function Buynow() {
                 },
               })
             );
-            alert("Order confirmed");
+            alert(`Order confirmed\nYour token id is ${customer.tokenID}`);
 
             window.location.reload();
           })
@@ -89,7 +93,7 @@ function Buynow() {
   return (
     <div className="buy_card">
       <header>
-        <Link to={"/yourcart"}>
+        <Link to={"/"}>
           <button className="btn btn-basic btn-m-0">
             <img src={arror} alt="" />
           </button>
@@ -113,7 +117,7 @@ function Buynow() {
       </header>
       <main>
         <section className="sect location">
-          <h2>Your location</h2>
+          <h2>Location info</h2>
           <small style={{ color: "crimson" }}>
             * marked fileds are required
           </small>
@@ -179,26 +183,20 @@ function Buynow() {
           </form>
         </section>
         <section className="sect payment">
-          <h2>Payment info</h2>
+          <h2>Delivery Details</h2>
           <article>
             <div className="custoinfo">
-              <h4>Customer Info</h4>
-              <p>Name: {customer.name ? customer.name : "not provided"}</p>
-              <p>Email: {customer.email ? customer.email : "not provided"}</p>
-              <p>
-                Mobile: {customer.mobile ? customer.mobile : "not provided"}
-              </p>
-              <p>
-                Token Id: {customer.name ? customer.tokenID : "Not provided"}
-              </p>
-              <p>
-                Address: {customer.address ? customer.address : "not provided"}
-              </p>
+              <h4>Receiver info</h4>
+              {customer?.name && <p>Name: {customer.name}</p>}
+              {customer?.email && <p>Email: {customer.email}</p>}
+              {customer?.mobile && <p>Mobile: {customer.mobile}</p>}
+
+              {customer?.address && <p>Address: {customer.address}</p>}
             </div>
             <div className="itemsInfo">
-              <h4>Ordered Items</h4>
+              <h4>Payment info</h4>
               <Link
-                to={"/"}
+                to={"/yourcart"}
                 style={{
                   textDecoration: "none",
                 }}
@@ -216,17 +214,47 @@ function Buynow() {
               {newData?.map((ele, id) => {
                 return (
                   <p key={id}>
-                    <span>{id + 1}.</span> {ele?.title} --{" "}
-                    {formatMoneyIntoBDT(ele?.taka)} <small>BDT</small>
+                    <span>{id + 1}. </span> {ele?.title}
+                    {`( x${ele?.quantity})`} --{" "}
+                    {formatMoneyIntoBDT(ele?.taka * ele?.quantity)} BDT
                   </p>
                 );
               })}
             </div>
           </article>
-          <h4>Total Price: {formatMoneyIntoBDT(price)} BDT</h4>
-          <button className="confirm" onClick={checkEmptyField}>
-            confirm
-          </button>
+          <section className="price">
+            <article
+              style={{
+                display: "flex",
+                alignItems: "center",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                width: "90%",
+                margin: "5px auto",
+              }}
+            >
+              <p>Delivery cost: </p>
+              <p>100 BDT</p>
+            </article>
+            <hr />
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                width: "90%",
+                margin: "5pt auto",
+              }}
+            >
+              <article>
+                <span>Total </span>
+                <h4>{formatMoneyIntoBDT(price + 100)} BDT</h4>
+              </article>
+              <button className="confirm" onClick={checkEmptyField}>
+                confirm
+              </button>
+            </div>
+          </section>
         </section>
       </main>
     </div>

@@ -5,7 +5,7 @@ import gg from "/src/assets/tools/icons/g.png";
 import { auth } from "../../../../firebase";
 import { signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { useAuthContext } from "../../Hooks/firebase/AuthContext";
-
+import Loading from "../../Loading";
 function Login() {
   const { currentUser } = useAuthContext();
   const [userLoginInfo, setuserLoginInfo] = useState({
@@ -16,9 +16,6 @@ function Login() {
 
   const [showHide, setShowHide] = useState(false);
   const [load, setload] = useState(false);
-  const Loading = () => {
-    return <span>...</span>;
-  };
 
   function getUserLoginInfo(em, pw) {
     setuserLoginInfo({ email: em, pass: pw });
@@ -129,7 +126,7 @@ function Login() {
               </span>
             </section>
             <button className="btn btn-login " type="submit">
-              {load ? <Loading /> : "Login"}
+              {load ? <Loading size={1.2} /> : "Login"}
             </button>
           </form>
           <p

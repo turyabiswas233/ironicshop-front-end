@@ -34,7 +34,9 @@ function getLoginRoute() {
     setIsInLoginPage(
       path.includes("paymentconfirm") ||
         path.includes("login") ||
-        path.includes("signup")
+        path.includes("signup") ||
+        path.includes("yourcart") ||
+        path.includes("admin")
     );
   }, [path]);
 
@@ -94,7 +96,10 @@ function addToCart_LocalStorage() {
     const preLocalCartNew = JSON.parse(lcoal_storage.getItem(cartRef));
     if (!preLocalCartNew) {
       {
-        lcoal_storage.setItem(cartRef, JSON.stringify([obj]));
+        lcoal_storage.setItem(
+          cartRef,
+          JSON.stringify([{ ...obj, quantity: 1 }])
+        );
         alert("Added to cart");
       }
     } else if (preLocalCartNew) {
@@ -103,7 +108,7 @@ function addToCart_LocalStorage() {
       else {
         lcoal_storage.setItem(
           cartRef,
-          JSON.stringify([...preLocalCartNew, obj])
+          JSON.stringify([...preLocalCartNew, { ...obj, quantity: 1 }])
         );
         alert("Added to cart");
       }
@@ -128,7 +133,7 @@ function addToCart_LocalStorage() {
     setPrice(0);
     const preLocalCartNew = JSON.parse(lcoal_storage.getItem(cartRef));
     preLocalCartNew?.map((item) => {
-      setPrice((pre) => pre + item?.taka);
+      setPrice((pre) => pre + item?.taka * item?.quantity);
     });
   }
 
@@ -142,6 +147,20 @@ function addToCart_LocalStorage() {
     else lcoal_storage.setItem(cartRef, JSON.stringify([]));
     setCurCart(JSON.parse(lcoal_storage.getItem(cartRef)));
   }
+
+  // update quantity of each itemd
+  function updateQnt(id, qnt) {
+    const preLocalCartNew = JSON.parse(lcoal_storage.getItem(cartRef));
+    const arr = preLocalCartNew.map((data) => {
+      if (data?.itemID == id) {
+        return { ...data, quantity: qnt };
+      }
+      return { ...data };
+    });
+
+    lcoal_storage.setItem(cartRef, JSON.stringify(arr));
+    setCurCart(JSON.parse(lcoal_storage.getItem(cartRef)));
+  }
   return {
     cartRef,
     lcoal_storage,
@@ -151,6 +170,7 @@ function addToCart_LocalStorage() {
     addItem,
     handleToggle,
     updatePrice,
+    updateQnt,
     deleleSelectedItems,
   };
 }

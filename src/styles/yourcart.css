@@ -1,6 +1,6 @@
 .yourcart {
     width: 90%;
-    padding: 30px 0;
+    padding: .5cm 0 5cm;
     margin: 10px auto;
     position: relative;
 }
@@ -96,6 +96,10 @@
     max-height: 600px;
 }
 
+.yourcart .main section.list::-webkit-scrollbar {
+    width: 0;
+}
+
 .yourcart .main section.list h4 {
     text-transform: capitalize;
     font-weight: bold;
@@ -113,44 +117,71 @@
 }
 
 
-@media (width >=786px) {
+
+
+.yourcart .totalprice {
+    bottom: 5%;
+    left: 5%;
+    width: 90%;
+}
+
+@media (width >=720px) {
     .yourcart .main section.list div.list-grid {
         width: max-content;
 
     }
 
-}
+    .yourcart .totalprice {
 
-.yourcart .totalprice.mobile {
-    bottom: 5%;
-    left: 5%;
-    width: 100%;
-}
+        width: 400px;
+    }
 
-.yourcart .totalprice.desktop {
-    top: 0%;
-    right: 0%;
-    width: 400px;
 }
 
 /* cart design */
-table.cartTable {
+.cartTable {
     width: 100%;
-
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 15px;
     border-radius: 10px;
     text-align: center;
     background-color: white;
     position: relative;
-
 }
 
-table tr.cart td {
+@media (width >720px) {
+    .cartTable {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (width >1400px) {
+    .cartTable {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+}
+
+.cartTable .cart {
     border: 1pt solid slateblue;
-
-
+    border-radius: 15pt;
+    position: relative;
+    padding-bottom: 5px;
+    background-color: transparent;
+    transition: all .15s ease-out;
 }
 
-span.selector {
+.cart:hover {
+    background-color: #a6afb944;
+}
+
+.cartTable .cart .item-info article {
+    display: grid;
+    text-align: justify;
+    padding: 12pt;
+}
+
+.cart span.selector {
     margin: 0 auto;
     width: .8rem;
     height: .8rem;
@@ -160,15 +191,18 @@ span.selector {
     justify-content: center;
     transition: all 0.2s ease-in;
     outline: 1.75pt solid transparent;
+    position: absolute;
+    top: 14px;
+    right: 10px;
 }
 
-span.selected {
+.cart span.selected {
     outline-color: #22e92a;
     background: #22E92A;
     outline-offset: 2.5pt;
 }
 
-span.not-selected {
+.cart span.not-selected {
     background: #707070;
 }
 
@@ -176,7 +210,7 @@ span.not-selected {
 
 /* price details */
 .yourcart .totalprice {
-    position: sticky;
+    position: fixed;
     z-index: 10;
     display: flex;
     justify-content: space-between;

@@ -38,6 +38,7 @@ function CompleteUserForm() {
           })
             .then(() => {
               alert("Yahoo!!");
+              window.location.reload();
             })
             .catch((err) => {
               alert("Failed to updated profile");

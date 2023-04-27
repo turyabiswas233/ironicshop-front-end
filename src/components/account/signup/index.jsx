@@ -1,8 +1,14 @@
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+} from "firebase/auth";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { auth } from "../../../../firebase";
-import eye from "/src/assets/tools/icons/eyeslash.png";
+
+// react icons
+import { MdPeopleAlt } from "react-icons/md";
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 
 function Signup() {
   const [userLoginInfo, setuserLoginInfo] = useState({
@@ -20,8 +26,9 @@ function Signup() {
         auth,
         userLoginInfo.email,
         userLoginInfo.pass
-      ).then(() => {
-        alert(auth.currentUser.email);
+      ).then((user) => {
+        sendEmailVerification(user.user);
+        alert(`Email verification has been sent to ${user.user.email} email.`);
       });
     }
   }
@@ -108,14 +115,22 @@ function Signup() {
               }
             />
             <span className="pass_icon" onClick={handlePasswordHider}>
-              <img src={eye} width={25} alt="" />
+              {showHide ? (
+                <AiOutlineEye size={"1.5rem"} />
+              ) : (
+                <AiOutlineEyeInvisible size={"1.5rem"} />
+              )}
             </span>
             <span className={`pass_err ${showHide ? "show" : ""}`}>
               Please hide your password to continue
             </span>
           </section>
-          <button className="btn btn-signup btn-buy " type="submit">
-            Create Account
+          <button
+            className="btn btn-signup btn-buy "
+            style={{ gap: "5px" }}
+            type="submit"
+          >
+            Create Account <MdPeopleAlt />
           </button>
         </form>
         <p

@@ -44,10 +44,10 @@ function Items({ props, id }) {
         >
           {/* photo of product */}
           <img
-            style={{ margin: "0px auto" }}
+            style={{ margin: "0  auto" }}
             src={props?.img ? props?.img : watch}
             alt="product"
-            width={115}
+            width={"100%"}
             height={"auto"}
           />
           {/*product's title */}
@@ -70,9 +70,30 @@ function Items({ props, id }) {
         </p>
         {/* taka */}
         <h3 style={{ color: "#00A507" }}>
-          {formatMoneyIntoBDT(props?.taka, "shortBDT")}
+          {formatMoneyIntoBDT(props?.taka, "")} <small>BDT</small>
         </h3>
-        <button className="btn" onClick={() => addItem(props, props?.itemID)}>
+        <button
+          style={{
+            width: "100%",
+            height: "auto",
+            padding: "5pt",
+            border: "0",
+            cursor: "pointer",
+            backgroundColor: JSON.parse(lcoal_storage.getItem(cartRef))?.find(
+              (data) => data?.itemID == props?.itemID
+            )
+              ? "#323277"
+              : "#eaea55",
+            color: JSON.parse(lcoal_storage.getItem(cartRef))?.find(
+              (data) => data?.itemID == props?.itemID
+            )
+              ? "white"
+              : "black",
+            fontWeight: "600",
+            fontSize: "1.01em",
+          }}
+          onClick={() => addItem(props, props?.itemID)}
+        >
           {JSON.parse(lcoal_storage.getItem(cartRef))?.find(
             (data) => data?.itemID == props?.itemID
           )
@@ -81,7 +102,7 @@ function Items({ props, id }) {
         </button>
       </div>
     );
-  }, [JSON.parse(lcoal_storage.getItem(cartRef)), props]);
+  }, [lcoal_storage.getItem(cartRef)]);
   return <>{itemCart}</>;
 }
 
