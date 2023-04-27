@@ -5,8 +5,6 @@ import menuicon from "../../assets/tools/icons/Menu_icon.png";
 import { Link } from "react-router-dom";
 import { useAuthContext } from "../Hooks/firebase/AuthContext";
 import {
-  Firestore,
-  addDoc,
   arrayUnion,
   collection,
   doc,
@@ -492,7 +490,7 @@ const PopUpCard = () => {
     if (title && taka && type && itemID) {
       setload(true);
 
-      await addDoc(doc(fdb, `products/${itemID + type}`), {
+      await setDoc(doc(fdb, `products/${itemID + type}`), {
         title: title,
         img: null,
         taka: Number(taka),
