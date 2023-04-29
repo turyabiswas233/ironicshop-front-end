@@ -4,9 +4,10 @@ import { useAuthContext } from "../Hooks/firebase/AuthContext";
 import { signOut, updateProfile } from "firebase/auth";
 import { auth, fdb } from "../../../firebase";
 import { doc, serverTimestamp, setDoc } from "firebase/firestore";
-
+import Loading from "../Loading";
 function CompleteUserForm() {
   const { currentUser } = useAuthContext();
+  const [isLoading, setloading] = useState(false);
   const [userLoginInfo, setuserLoginInfo] = useState({
     fullname: "",
     phnumber: "",
@@ -22,6 +23,7 @@ function CompleteUserForm() {
   }
   async function handleCreateProfile(e) {
     e.preventDefault();
+    setloading(true);
     if (checkBDPhoneValidity) {
       await setDoc(doc(fdb, "users", currentUser.uid), {
         id: currentUser.uid,
@@ -37,16 +39,20 @@ function CompleteUserForm() {
             displayName: userLoginInfo.fullname,
           })
             .then(() => {
-              alert("Yahoo!!");
+              setloading(false);
               window.location.reload();
             })
             .catch((err) => {
+              setloading(false);
               alert("Failed to updated profile");
             });
         })
         .catch((err) => {
           alert("Unfortunately there was an error, try again!");
         });
+    } else {
+      setloading(false);
+      alert("Check your phone number");
     }
   }
 
@@ -157,8 +163,8 @@ function CompleteUserForm() {
                 }
               />
             </section>
-            <button className="btn  btn-pink btn-bold " type="submit">
-              Submit
+            <button className="btn  btn-circle btn-px-2 btn-bold btn-cyan" type="submit">
+              {isLoading? <Loading />: 'Submit'}
             </button>
           </form>
         </div>

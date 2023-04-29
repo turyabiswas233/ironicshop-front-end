@@ -244,7 +244,8 @@ const Dashboard = ({ orders }) => {
                     {orders[id]?.orderdItems[0]?.newData?.map((data, id1) => {
                       return (
                         <li style={{ marginLeft: "15px" }} key={id1}>
-                          {data?.title} : {formatMoneyIntoBDT(data.taka)} tk
+                          {data?.title} {"(x"} {data?.quantity}
+                          {")"} : {formatMoneyIntoBDT(data.taka)} tk
                         </li>
                       );
                     })}

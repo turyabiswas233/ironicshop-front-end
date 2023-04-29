@@ -28,32 +28,17 @@ function useFullData(page) {
   return { datas, getAllProducts };
 }
 
-function useLimitData(time) {
-  const [limitdatas, setLimitDatas] = useState([]);
+async function useLimitData() {
+  const qry = query(
+    collection(fdb, "products"),
+    orderBy("itemID", "asc"),
+    limit(5)
+  );
 
-  async function getLimitProducts() {
-    const qry = query(
-      collection(fdb, "products"),
-      orderBy("itemID", "asc"),
-      limit(5)
-    );
+  const snap = await getDocs(qry);
 
-    const snap = await getDocs(qry);
-
-    setLimitDatas([]);
-    snap.forEach((doc) => {
-      setLimitDatas((pre) => [...pre, { id: doc.id, ...doc.data() }]);
-    });
-    localStorage.setItem(
-      "allProd",
-      JSON.stringify({
-        time: time,
-        list: limitdatas,
-      })
-    );
-  }
-
-  return { limitdatas, getLimitProducts };
+  const lists = snap.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+  return lists;
 }
 
 export { useFullData, useLimitData };

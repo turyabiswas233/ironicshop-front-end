@@ -66,7 +66,7 @@ function App() {
               <Admin />
             </Suspense>
           }
-          path={"/admin"}
+          path={currentUser ? "/admin" : ""}
         />
         <Route
           element={

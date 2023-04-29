@@ -292,7 +292,9 @@ function ItemDetails() {
                   >
                     <button
                       className="btn btn-black btn-txt-white btn-buy "
-                      onClick={() => addItem(productDB, productDB?.itemID)}
+                      onClick={() =>
+                        addItem(productDB, productDB?.itemID, true)
+                      }
                     >
                       Buy Now
                     </button>
@@ -315,33 +317,33 @@ function ItemDetails() {
                 {<Review />}
                 {<Review />}
               </section>
-              {/* question and answer */}
-              {currentUser && (
-                <section className="que_ans">
-                  <article>
-                    <h3>Ask questions</h3>
-                    <hr
-                      style={{
-                        background: "#000",
-                        filter: "contrast(.5)",
-                      }}
-                    />
-                  </article>
-                  <section className="qustion_box">
-                    <input
-                      type="text"
-                      name=""
-                      id=""
-                      placeholder="Type a question..."
-                    />
-                    <button className="btn btn-send" type="submit">
-                      <img src={send} width={20} alt="" />
-                    </button>
-                  </section>
-                </section>
-              )}
             </div>
           </div>
+          {/* question and answer */}
+          {currentUser && (
+            <section className="que_ans">
+              <article>
+                <h3>Ask questions</h3>
+                <hr
+                  style={{
+                    background: "#000",
+                    filter: "contrast(.5)",
+                  }}
+                />
+              </article>
+              <section className="qustion_box">
+                <input
+                  type="text"
+                  name=""
+                  id=""
+                  placeholder="Type a question..."
+                />
+                <button className="btn btn-send" type="submit">
+                  <img src={send} width={20} alt="" />
+                </button>
+              </section>
+            </section>
+          )}
         </div>
       </div>
     );

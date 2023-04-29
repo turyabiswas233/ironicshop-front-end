@@ -1,5 +1,5 @@
 // all components and datas
-import React, { useEffect } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import "react-slideshow-image/dist/styles.css";
 import { Slide } from "react-slideshow-image";
@@ -10,6 +10,8 @@ import { useLimitData } from "../data/data";
 import Items from "./Items";
 import "../styles/sorter.css";
 import { useAuthContext } from "./Hooks/firebase/AuthContext";
+import Loading from "./Loading";
+import { useQuery } from "react-query";
 
 const slideShowTmp = [
   {
@@ -82,18 +84,16 @@ const Slideshow = () => {
 
 // main function
 function Home() {
-  let time = new Date().getTime();
-
   const { currenUser } = useAuthContext();
-  const { limitdatas, getLimitProducts } = useLimitData(time);
+  const { data, isLoading, error } = useQuery("allProList", useLimitData);
   const { scroll } = useScreenSize();
   const [searchkeyword, setsearchkeyword] = useSearchKey();
-  const items = limitdatas?.filter((data) =>
+  const items = data?.filter((data) =>
     data?.type?.toLowerCase()?.includes(searchkeyword?.toLowerCase())
   );
-  useEffect(() => {
-    getLimitProducts();
-  }, []);
+  const LoadingData = () => {
+    if (isLoading) return <Loading size={5} />;
+  };
 
   return (
     <div
@@ -117,7 +117,7 @@ function Home() {
         {items?.length !== 0 && (
           <button className="btn btn-basic btn-m-0">See all</button>
         )}
-
+        <LoadingData />
         <section>
           {items?.length !== 0 ? (
             items?.map((data, id) => {

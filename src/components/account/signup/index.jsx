@@ -15,12 +15,15 @@ function Signup() {
     email: "",
     pass: "",
   });
+  const [isLoading, setloading] = useState(false);
+
   const [showHide, setshowHide] = useState(false);
   function handlePasswordHider() {
     setshowHide(!showHide);
   }
   function createAccount(e) {
     e.preventDefault();
+    setloading(true)
     if (userLoginInfo.email.length !== 0 && userLoginInfo.pass.length !== 0) {
       createUserWithEmailAndPassword(
         auth,
@@ -29,7 +32,15 @@ function Signup() {
       ).then((user) => {
         sendEmailVerification(user.user);
         alert(`Email verification has been sent to ${user.user.email} email.`);
+        setloading(false)
+      }).catch(err=>{
+        console.log(err)
+        alert("Please try again.")
       });
+    }
+    else{
+      setloading(false)
+      alert("Please complete the form to continue!");
     }
   }
   return (

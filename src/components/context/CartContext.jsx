@@ -42,21 +42,7 @@ export function useCartContext() {
     setPrice(0);
   }
 
-  //add to cart
-  function addToCart(id) {
-    // setNewData((pre) => {
-    //   pre.find((ele) => {
-    //     if (!ele) {
-    //       alert(`Added ${id}`);
-    //       return [...pre, arr.find((elem) => elem.itemID == id)];
-    //     } else {
-    //       alert("Already added.");
-    //       return [...pre];
-    //     }
-    //   });
-    // });
-  }
-  return { newData, price, toggleItems, priceSeter, deleteCart, addToCart };
+  return { newData, price, toggleItems, priceSeter, deleteCart };
 }
 export const CartContextProvider = ({ children }) => {
   const { newData, price, toggleItems, priceSeter, deleteCart, addToCart } =

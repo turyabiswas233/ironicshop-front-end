@@ -233,7 +233,14 @@ function Buynow() {
                 margin: "5px auto",
               }}
             >
-              <p>Delivery cost: </p>
+              <p>
+                Delivery cost:{" "}
+                <small>
+                  <b>
+                    {"("}cash on delivery{")"}
+                  </b>
+                </small>
+              </p>
               <p>100 BDT</p>
             </article>
             <hr />

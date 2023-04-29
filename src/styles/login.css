@@ -93,6 +93,8 @@
     border: 1px solid #c3c3c3;
     border-radius: 100px;
     padding: 15px 10px;
+    width: 100%;
+    font-family: sans-serif;
     margin: 1rem auto;
     background-color: #fff;
     cursor: pointer;
@@ -102,4 +104,39 @@
 
 .otherSys .singup:hover {
     background-color: #eeeeee;
+}
+
+/* pass reset box */
+.passReset {
+    width: fit-content;
+    height: fit-content;
+    padding: 5pt 10pt;
+    background-color: #fff;
+    border: 1.2px solid gray;
+    border-radius: 5px;
+    box-shadow: 0 0 20px -10px #454545;
+    margin: 0 auto;
+}
+
+.passReset p {
+    align-items: center;
+    display: flex;
+    gap: 5px;
+}
+
+@media screen and (min-width:680px) {
+    .flex-box {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 45%));
+        justify-content: space-between;
+        align-items: center;
+        gap: 3rem;
+        width: 100%;
+        margin: auto;
+    }
+
+    .flex-box .form_box {
+        border-right: 2pt solid slategray;
+    }
+
 }

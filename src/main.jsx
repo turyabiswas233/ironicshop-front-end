@@ -10,14 +10,18 @@ import "./styles/login.css";
 import "./styles/navbar.css";
 import "./styles/yourcart.css";
 import "./styles/buystatus.css";
+import { QueryClient, QueryClientProvider } from "react-query";
 
 const root = document.getElementById("root");
+const queryClient = new QueryClient();
 ReactDOM.createRoot(root).render(
   <React.StrictMode>
-    <BrowserRouter>
-      <Routes>
-        <Route path="*" element={<App />} />
-      </Routes>
-    </BrowserRouter>
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        <Routes>
+          <Route path="*" element={<App />} />
+        </Routes>
+      </BrowserRouter>
+    </QueryClientProvider>
   </React.StrictMode>
 );

@@ -92,7 +92,7 @@ function addToCart_LocalStorage() {
   const [curCart, setCurCart] = useState([]);
 
   // add items to cart <--done-->
-  function addItem(obj, id) {
+  function addItem(obj, id, isPopupDis) {
     const preLocalCartNew = JSON.parse(lcoal_storage.getItem(cartRef));
     if (!preLocalCartNew) {
       {
@@ -100,17 +100,21 @@ function addToCart_LocalStorage() {
           cartRef,
           JSON.stringify([{ ...obj, quantity: 1 }])
         );
-        alert("Added to cart");
+        {
+          isPopupDis ? null : alert("Added to cart");
+        }
       }
     } else if (preLocalCartNew) {
-      if (preLocalCartNew.find((data) => data?.itemID == id))
-        alert("Already added");
-      else {
+      if (preLocalCartNew.find((data) => data?.itemID == id)) {
+        isPopupDis ? null : alert("Already added");
+      } else {
         lcoal_storage.setItem(
           cartRef,
           JSON.stringify([...preLocalCartNew, { ...obj, quantity: 1 }])
         );
-        alert("Added to cart");
+        {
+          isPopupDis ? null : alert("Added to cart");
+        }
       }
     }
   }
