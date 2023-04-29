@@ -4,7 +4,11 @@ import { useAuthContext } from "../Hooks/firebase/AuthContext";
 import { signOut, updateProfile } from "firebase/auth";
 import { auth, fdb } from "../../../firebase";
 import { doc, serverTimestamp, setDoc } from "firebase/firestore";
+// styles components and icons
 import Loading from "../Loading";
+import { IoMdCheckmarkCircle } from "react-icons/io";
+
+// main function
 function CompleteUserForm() {
   const { currentUser } = useAuthContext();
   const [isLoading, setloading] = useState(false);
@@ -23,39 +27,58 @@ function CompleteUserForm() {
   }
   async function handleCreateProfile(e) {
     e.preventDefault();
-    setloading(true);
-    if (checkBDPhoneValidity) {
-      await setDoc(doc(fdb, "users", currentUser.uid), {
-        id: currentUser.uid,
-        f_name: userLoginInfo.fullname,
-        p_num: "+88" + userLoginInfo.phnumber,
-        address: userLoginInfo.address,
-        email: currentUser.email,
-        timestamp: serverTimestamp(),
-        admin: false,
-      })
-        .then(async () => {
-          await updateProfile(currentUser, {
-            displayName: userLoginInfo.fullname,
-          })
-            .then(() => {
-              setloading(false);
-              window.location.reload();
-            })
-            .catch((err) => {
-              setloading(false);
-              alert("Failed to updated profile");
-            });
+    if (!auth.currentUser.emailVerified) return;
+    else {
+      setloading(true);
+      if (checkBDPhoneValidity) {
+        await setDoc(doc(fdb, "users", currentUser.uid), {
+          id: currentUser.uid,
+          f_name: userLoginInfo.fullname,
+          p_num: "+88" + userLoginInfo.phnumber,
+          address: userLoginInfo.address,
+          email: currentUser.email,
+          timestamp: serverTimestamp(),
+          admin: false,
         })
-        .catch((err) => {
-          alert("Unfortunately there was an error, try again!");
-        });
-    } else {
-      setloading(false);
-      alert("Check your phone number");
+          .then(async () => {
+            await updateProfile(currentUser, {
+              displayName: userLoginInfo.fullname,
+            })
+              .then(() => {
+                setloading(false);
+                window.location.reload();
+              })
+              .catch((err) => {
+                setloading(false);
+                alert("Failed to updated profile");
+              });
+          })
+          .catch((err) => {
+            alert("Unfortunately there was an error, try again!");
+          });
+      } else {
+        setloading(false);
+        alert("Check your phone number");
+      }
     }
   }
-
+  const EmailVerifyAlert = () => {
+    if (!auth.currentUser.emailVerified)
+      return (
+        <>
+          <div className="emailVerifyAlert">
+            <p>
+              Please verify your email to continue
+              <IoMdCheckmarkCircle />
+            </p>
+            <p>
+              Check your <u>{auth.currentUser.email}</u>
+              email.
+            </p>
+          </div>
+        </>
+      );
+  };
   return (
     <div
       className="login"
@@ -76,7 +99,8 @@ function CompleteUserForm() {
           iRonic Store
         </Link>
       </h2>
-      <button className="btn btn-red" onClick={logoutMe}>
+      {<EmailVerifyAlert />}
+      <button className="btn btn-logout" onClick={logoutMe}>
         Logout
       </button>
       <div className="login_details">
@@ -163,8 +187,12 @@ function CompleteUserForm() {
                 }
               />
             </section>
-            <button className="btn  btn-circle btn-px-2 btn-bold btn-cyan" type="submit">
-              {isLoading? <Loading />: 'Submit'}
+            <button
+              className="btn  btn-circle btn-px-2 btn-bold btn-cyan"
+              type="submit"
+              // disabled={!auth.currentUser.emailVerified}
+            >
+              {isLoading ? <Loading size={1} /> : "Submit"}
             </button>
           </form>
         </div>

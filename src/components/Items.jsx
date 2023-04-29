@@ -69,9 +69,9 @@ function Items({ props, id }) {
           {props?.sold && <span>| {convert_numToUnit(props?.sold)} sold</span>}
         </p>
         {/* taka */}
-        <h3 style={{ color: "#00A507" }}>
+        <h4 style={{ color: "#00A507" }}>
           {formatMoneyIntoBDT(props?.taka, "")} <small>BDT</small>
-        </h3>
+        </h4>
         <button
           style={{
             width: "100%",
@@ -90,7 +90,7 @@ function Items({ props, id }) {
               ? "white"
               : "black",
             fontWeight: "600",
-            fontSize: "1.01em",
+            fontSize: ".81em",
           }}
           onClick={() => addItem(props, props?.itemID)}
         >

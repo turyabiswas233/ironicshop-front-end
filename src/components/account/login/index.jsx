@@ -135,7 +135,11 @@ function Login() {
             <form action="" onSubmit={handleLogin}>
               <section
                 className={`form_box ${
-                  userLoginInfo.email.includes("@") ? "email" : ""
+                  userLoginInfo.email
+                    ? userLoginInfo.email.includes("@")
+                      ? "active"
+                      : "danger"
+                    : ""
                 }`}
               >
                 {/* email */}
@@ -155,7 +159,11 @@ function Login() {
 
               <section
                 className={`form_box ${
-                  userLoginInfo.pass.length == 8 ? "password" : ""
+                  userLoginInfo.pass
+                    ? userLoginInfo.pass.length >= 8
+                      ? "active"
+                      : "danger"
+                    : ""
                 }`}
               >
                 {/* password */}
@@ -164,7 +172,7 @@ function Login() {
                   type={!showHide ? "password" : "text"}
                   name="password"
                   id="password"
-                  placeholder="use your password (8 character or more)"
+                  placeholder="Enter your password "
                   minLength={8}
                   required
                   value={userLoginInfo.pass}
@@ -174,9 +182,9 @@ function Login() {
                 />
                 <span className="pass_icon" onClick={handlePasswordHider}>
                   {showHide ? (
-                    <AiOutlineEye size={"1.5rem"} />
+                    <AiOutlineEye size={"1.5rem"} color="royalblue" />
                   ) : (
-                    <AiOutlineEyeInvisible size={"1.5rem"} />
+                    <AiOutlineEyeInvisible size={"1.5rem"} color="crimson" />
                   )}
                 </span>
                 <span className={`pass_err ${showHide ? "show" : ""}`}>

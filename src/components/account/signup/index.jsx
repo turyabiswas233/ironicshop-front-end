@@ -2,9 +2,10 @@ import {
   createUserWithEmailAndPassword,
   sendEmailVerification,
 } from "firebase/auth";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { auth } from "../../../../firebase";
+import Loading from "../../Loading";
 
 // react icons
 import { MdPeopleAlt } from "react-icons/md";
@@ -16,33 +17,45 @@ function Signup() {
     pass: "",
   });
   const [isLoading, setloading] = useState(false);
-
+  const [error, SetErr] = useState("");
   const [showHide, setshowHide] = useState(false);
   function handlePasswordHider() {
     setshowHide(!showHide);
   }
-  function createAccount(e) {
+  async function createAccount(e) {
     e.preventDefault();
-    setloading(true)
+    setloading(true);
     if (userLoginInfo.email.length !== 0 && userLoginInfo.pass.length !== 0) {
-      createUserWithEmailAndPassword(
+      await createUserWithEmailAndPassword(
         auth,
         userLoginInfo.email,
         userLoginInfo.pass
-      ).then((user) => {
-        sendEmailVerification(user.user);
-        alert(`Email verification has been sent to ${user.user.email} email.`);
-        setloading(false)
-      }).catch(err=>{
-        console.log(err)
-        alert("Please try again.")
-      });
-    }
-    else{
-      setloading(false)
-      alert("Please complete the form to continue!");
+      )
+        .then((user) => {
+          sendEmailVerification(user.user);
+          alert(
+            `Email verification has been sent to ${user.user.email} email.`
+          );
+          setloading(false);
+        })
+        .catch((err) => {
+          setloading(false);
+          console.log(err);
+          err?.code?.includes("already-in-use")
+            ? SetErr(
+                "Someone has created account usign this email. Use another email."
+              )
+            : SetErr("Please try again.");
+          alert(error);
+        });
+    } else {
+      setloading(false);
+      SetErr("Please complete the form to continue!");
     }
   }
+  const accountError = useMemo(() => {
+    <p> frf{error}</p>;
+  }, [error]);
   return (
     <div
       className="login"
@@ -63,8 +76,10 @@ function Signup() {
           iRonic Store
         </Link>
       </h2>
+      {accountError}
       <div className="login_details">
         <h3>Sign up </h3>
+
         <p style={{ color: "#525252", fontSize: ".75em" }}>
           Fill the form with your correct Email and a strong password
         </p>
@@ -88,7 +103,12 @@ function Signup() {
         <form action="" onSubmit={createAccount}>
           <section
             className={`form_box ${
-              userLoginInfo.email.includes("@") ? "email" : ""
+              userLoginInfo.email
+                ? userLoginInfo.email.includes("@") &&
+                  userLoginInfo.email[userLoginInfo.email.length - 1] !== "@"
+                  ? "active"
+                  : "danger"
+                : ""
             }`}
           >
             {/* email */}
@@ -98,7 +118,6 @@ function Signup() {
               name="email"
               id="email"
               placeholder="john@example.com"
-              required
               value={userLoginInfo.email}
               onChange={(e) =>
                 setuserLoginInfo((pre) => ({ ...pre, email: e.target.value }))
@@ -108,7 +127,11 @@ function Signup() {
 
           <section
             className={`form_box ${
-              userLoginInfo.pass.length == 8 ? "password" : ""
+              userLoginInfo.pass
+                ? userLoginInfo.pass.length >= 8
+                  ? "active"
+                  : "danger"
+                : ""
             }`}
           >
             {/* password */}
@@ -117,9 +140,8 @@ function Signup() {
               type={!showHide ? "password" : "text"}
               name="password"
               id="password"
-              placeholder="use your password (8 character or more)"
+              placeholder="password (8 character or more)"
               minLength={8}
-              required
               value={userLoginInfo.pass}
               onChange={(e) =>
                 setuserLoginInfo((pre) => ({ ...pre, pass: e.target.value }))
@@ -127,9 +149,9 @@ function Signup() {
             />
             <span className="pass_icon" onClick={handlePasswordHider}>
               {showHide ? (
-                <AiOutlineEye size={"1.5rem"} />
+                <AiOutlineEye size={"1.5rem"} color="royalblue" />
               ) : (
-                <AiOutlineEyeInvisible size={"1.5rem"} />
+                <AiOutlineEyeInvisible size={"1.5rem"} color="crimson" />
               )}
             </span>
             <span className={`pass_err ${showHide ? "show" : ""}`}>
@@ -141,7 +163,13 @@ function Signup() {
             style={{ gap: "5px" }}
             type="submit"
           >
-            Create Account <MdPeopleAlt />
+            {isLoading ? (
+              <Loading size={1.2} />
+            ) : (
+              <>
+                Create Account <MdPeopleAlt />
+              </>
+            )}
           </button>
         </form>
         <p
@@ -151,9 +179,9 @@ function Signup() {
             fontSize: "small",
           }}
         >
-          Forget Password?{" "}
-          <a href="#" style={{ color: "#253BFF" }}>
-            Reset Password
+          Have an account?{" "}
+          <a href="/account/login" style={{ color: "#253BFF" }}>
+            Login
           </a>
         </p>
       </div>

@@ -1,5 +1,5 @@
 // all components and datas
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import "react-slideshow-image/dist/styles.css";
 import { Slide } from "react-slideshow-image";
@@ -11,7 +11,7 @@ import Items from "./Items";
 import "../styles/sorter.css";
 import { useAuthContext } from "./Hooks/firebase/AuthContext";
 import Loading from "./Loading";
-import { useQuery } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 
 const slideShowTmp = [
   {
@@ -81,16 +81,32 @@ const Slideshow = () => {
     </Slide>
   );
 };
-
+export const queryKey = "allProList";
+export const getDataQuery = () => {
+  const { data, isLoading, error } = useQuery(queryKey, useLimitData);
+  return { data, isLoading, error };
+};
 // main function
 function Home() {
   const { currenUser } = useAuthContext();
-  const { data, isLoading, error } = useQuery("allProList", useLimitData);
+  const { data, isLoading, error } = getDataQuery();
+  let data1;
+  const qrClient = useQueryClient();
+  const callback = () => {
+    data1 = qrClient.getQueryData(queryKey);
+  };
+  useEffect(() => {
+    callback();
+  }, [isLoading]);
   const { scroll } = useScreenSize();
   const [searchkeyword, setsearchkeyword] = useSearchKey();
-  const items = data?.filter((data) =>
-    data?.type?.toLowerCase()?.includes(searchkeyword?.toLowerCase())
-  );
+  const items = data1
+    ? data1?.filter((data) =>
+        data1?.type?.toLowerCase()?.includes(searchkeyword?.toLowerCase())
+      )
+    : data?.filter((data) =>
+        data?.type?.toLowerCase()?.includes(searchkeyword?.toLowerCase())
+      );
   const LoadingData = () => {
     if (isLoading) return <Loading size={5} />;
   };

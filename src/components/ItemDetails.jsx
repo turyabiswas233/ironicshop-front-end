@@ -22,11 +22,12 @@ function ItemDetails() {
   const [productDB, setProDB] = useState({});
   const [sizeArr, setsizearr] = useState([]);
 
-  async function getItemDetails(id) {
-    const itemDoc = doc(fdb, `products/${id}`);
+  async function getItemDetails(pid) {
+    const itemDoc = doc(fdb, `products/${pid}`);
     const item = await getDoc(itemDoc);
-    setProDB(item.data());
-    setsizearr(item.data()?.size[0]?.sizeArr);
+
+    setProDB({ id: item.id, ...item.data() });
+    setsizearr(item?.size[0]?.sizeArr);
   }
 
   const [scroll, setScroll] = useState(0);
@@ -36,6 +37,7 @@ function ItemDetails() {
     getItemDetails(arrID).catch((err) => {
       console.log(err.message);
     });
+    console.log(productDB);
   }, []);
 
   useEffect(() => {
@@ -242,15 +244,17 @@ function ItemDetails() {
                   <span style={{ color: "blue" }}>more</span>
                 </p>
               </section>
-              <section className="size">
-                <hr className="hr" />
-                <h3>size</h3>
-                <ul>
-                  {sizeArr?.map((size, szid) => {
-                    return <li key={szid}>{size}</li>;
-                  })}
-                </ul>
-              </section>
+              {sizeArr.length !== 0 && (
+                <section className="size">
+                  <hr className="hr" />
+                  <h3>size</h3>
+                  <ul>
+                    {sizeArr?.map((size, szid) => {
+                      return <li key={szid}>{size}</li>;
+                    })}
+                  </ul>
+                </section>
+              )}
               <section className="avail_col">
                 <hr className="hr" />
                 <h2>Available color</h2>
